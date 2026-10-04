@@ -1221,13 +1221,31 @@ function renderTables() {
 }
 
 function renderAll() {
-  // keep keyboard focus (e.g. Tab from one ask field to the next) across the re-render
-  const ae = document.activeElement;
-  const af = ae && ae.dataset && ae.dataset.f ? { f: ae.dataset.f, zone: ae.closest('#asks') ? '#asks' : '#sheet' } : null;
+  const f = focusMark();
   R = PC.evaluate(S);
   renderStatus(); renderAsks(); renderDecide(); renderRisk(); renderPath(); syncSheet(); renderLog(); renderTables(); renderKin();
   save();
-  if (af) { const el = document.querySelector(`${af.zone} [data-f="${af.f}"]`) || document.querySelector(`[data-f="${af.f}"]`); if (el && el !== document.activeElement) el.focus(); }
+  focusRestore(f);
+}
+
+/* keep keyboard flow across re-renders: same control if it still exists, otherwise the card now in that slot */
+function focusMark() {
+  const ae = document.activeElement;
+  if (!ae || ae === document.body || !ae.closest) return null;
+  const card = ae.closest('#asks .ask');
+  const sel = ae.dataset.f ? `[data-f="${ae.dataset.f}"]` : ae.dataset.pend ? `[data-pend="${ae.dataset.pend}"]` : null;
+  return { sel, zone: card ? '#asks' : ae.closest('#sheet') ? '#sheet' : null, key: card && card.dataset.ask, idx: card ? [...document.querySelectorAll('#asks .ask')].indexOf(card) : -1 };
+}
+function focusRestore(m) {
+  if (!m) return;
+  const el = m.sel && m.zone && document.querySelector(`${m.zone} ${m.sel}`);
+  if (el) { if (el !== document.activeElement) el.focus({ preventScroll: true }); return; }
+  if (m.zone !== '#asks') return;
+  const cards = [...document.querySelectorAll('#asks .ask')];
+  if (!cards.length) return;
+  const c = cards.find(x => x.dataset.ask === m.key) || cards[Math.min(Math.max(m.idx, 0), cards.length - 1)];
+  const f = c.querySelector('[data-f]');
+  if (f) f.focus({ preventScroll: true });
 }
 
 /* ---------- input handling ---------- */
