@@ -144,6 +144,40 @@ t('post-RP BCR, PSADT ~6 mo, pathological ISUP 2 → EAU high risk', () => asser
 t('post-RP BCR, PSADT >12 mo and ISUP 2 → EAU low risk', () => assert.equal(PC.kinetics([{ date: '2024-01-01', psa: 0.2 }, { date: '2025-01-01', psa: 0.25 }, { date: '2026-01-01', psa: 0.32 }], { setting: 'rp', pathGG: '2' }).eauRisk, 'low'));
 t('on ADT, PSADT ≤10 → high-risk nmCRPC note', () => assert.ok(PC.kinetics(rows, { setting: 'adt' }).notes.some(n => /nmCRPC/.test(n.t))));
 
+
+console.log('Taiwan NHI');
+const N = (n) => PC.nhi(n);
+const stOf = (r, re) => (r.items.find(i => re.test(i.d)) || {}).st;
+const HR = { stage: 'mcspc', gs8: true, bone3: true, visceral: false, nha: 'none', ecog: 1, labs: true };
+t('high-risk mCSPC (Gleason ≥8 + bone ≥3) → all ARPIs and daro triplet reimbursable', () => {
+  const r = N(HR); assert.ok(r.hr.ok);
+  ['Abiraterone＋ADT', 'Enzalutamide', 'Apalutamide', 'Darolutamide＋ADT', 'Darolutamide＋docetaxel'].forEach(d => assert.equal(stOf(r, new RegExp(d)), 'yes', d));
+});
+t('abiraterone triplet never reimbursed', () => assert.equal(stOf(N(HR), /Abiraterone＋docetaxel/), 'no'));
+t('only one high-risk feature → ARPIs not reimbursed', () => { const r = N({ ...HR, bone3: false }); assert.equal(r.hr.ok, false); assert.equal(stOf(r, /Enzalutamide/), 'no'); });
+t('one feature + one unknown → "check"', () => { const r = N({ ...HR, bone3: undefined }); assert.ok(r.hr.undetermined); assert.equal(stOf(r, /Apalutamide/), 'check'); });
+t('abiraterone mCSPC needs ECOG ≤1; enzalutamide does not', () => { const r = N({ ...HR, ecog: 2 }); assert.equal(stOf(r, /Abiraterone＋ADT/), 'no'); assert.equal(stOf(r, /Enzalutamide/), 'yes'); });
+t('daro triplet needs labs', () => assert.equal(stOf(N({ ...HR, labs: false }), /Darolutamide＋docetaxel/), 'no'));
+t('NHA already used → lifetime-one rule blocks all ARPIs', () => assert.equal(stOf(N({ ...HR, nha: 'used' }), /Darolutamide＋ADT/), 'no'));
+const NM = { stage: 'nmcrpc', psadt: 8, ecog: 0, noMets: true, nha: 'none' };
+t('nmCRPC PSADT 8 → enza/apa/daro yes, abiraterone no', () => { const r = N(NM); ['Enzalutamide', 'Apalutamide', 'Darolutamide'].forEach(d => assert.equal(stOf(r, new RegExp(d)), 'yes')); assert.equal(stOf(r, /Abiraterone/), 'no'); });
+t('nmCRPC PSADT 10 yes, 10.5 no', () => { assert.equal(stOf(N({ ...NM, psadt: 10 }), /Apalutamide/), 'yes'); assert.equal(stOf(N({ ...NM, psadt: 10.5 }), /Apalutamide/), 'no'); });
+t('nmCRPC: definite fail wins over missing data', () => assert.equal(stOf(N({ stage: 'nmcrpc', psadt: 14 }), /Enzalutamide/), 'no'));
+const MC = { stage: 'mcrpc', ecog: 1, nha: 'none', doce: 0, symptomatic: false, visceral: false, fastCRPC: false, gs8: true };
+t('mCRPC chemo-naive asymptomatic → abi/enza yes', () => assert.equal(stOf(N(MC), /化療前/), 'yes'));
+t('CRPC <12 months after ADT with Gleason ≥8 → must have chemo first', () => assert.equal(stOf(N({ ...MC, fastCRPC: true }), /化療前/), 'no'));
+t('symptomatic or visceral → pre-chemo ARPI no', () => { assert.equal(stOf(N({ ...MC, symptomatic: true }), /化療前/), 'no'); assert.equal(stOf(N({ ...MC, visceral: true }), /化療前/), 'no'); });
+t('post-docetaxel (2 cycles, failed, ECOG 2) → abi/enza yes', () => assert.equal(stOf(N({ ...MC, doce: 2, doceFail: true, ecog: 2 }), /docetaxel 後/), 'yes'));
+t('olaparib mono needs BRCA and prior NHA', () => { assert.equal(stOf(N({ ...MC, brca: true, nha: 'used' }), /Olaparib 單獨/), 'yes'); assert.equal(stOf(N({ ...MC, brca: true, nha: 'none' }), /Olaparib 單獨/), 'no'); });
+t('olaparib + abiraterone: BRCA, chemo-naive, abiraterone ≤4 mo allowed', () => { assert.equal(stOf(N({ ...MC, brca: true, nha: 'abiShort' }), /Olaparib＋abiraterone/), 'yes'); assert.equal(stOf(N({ ...MC, brca: true, nha: 'none', doce: 3 }), /Olaparib＋abiraterone/), 'no'); });
+t('cabazitaxel: docetaxel ≥3 + NHA progression + ECOG ≤1', () => { assert.equal(stOf(N({ ...MC, doce: 3, nha: 'used' }), /Cabazitaxel/), 'yes'); assert.equal(stOf(N({ ...MC, doce: 2, nha: 'used' }), /Cabazitaxel/), 'no'); });
+t('radium-223: symptomatic bone ≥2, no visceral', () => { assert.equal(stOf(N({ ...MC, boneSymp2: true }), /Radium/), 'yes'); assert.equal(stOf(N({ ...MC, boneSymp2: true, visceral: true }), /Radium/), 'no'); });
+t('Lu-PSMA not reimbursed', () => assert.equal(stOf(N(MC), /Lu-PSMA/), 'no'));
+const day = s => Date.parse(s);
+t('NHI PSADT data rules: valid series passes', () => { const c = PC.nhiPsadtCheck([{ date: '2026-01-05', psa: 0.6 }, { date: '2026-04-05', psa: 0.9 }, { date: '2026-07-05', psa: 1.4 }], day('2026-08-01')); assert.ok(c.ok, c.fails.join(',')); });
+t('NHI PSADT data rules: max ≤1.0 fails', () => { const c = PC.nhiPsadtCheck([{ date: '2026-01-05', psa: 0.3 }, { date: '2026-04-05', psa: 0.5 }, { date: '2026-07-05', psa: 0.9 }], day('2026-08-01')); assert.ok(!c.ok); assert.ok(c.fails.some(f => /最高值/.test(f))); });
+t('NHI PSADT data rules: span <8 weeks and stale last value fail', () => { const c = PC.nhiPsadtCheck([{ date: '2026-01-01', psa: 1 }, { date: '2026-01-20', psa: 1.5 }, { date: '2026-02-10', psa: 2 }], day('2026-08-01')); assert.ok(c.fails.some(f => /首末/.test(f))); assert.ok(c.fails.some(f => /3 個月/.test(f))); });
+
 console.log('Summary');
 t('summary includes NCCN group, low-volume tag and treatment', () => { const s = PC.summary({ age: 65, ...BG, bx: 'cancer', ...VL }); assert.match(s, /NCCN：低風險（低腫瘤量）/); assert.match(s, /主動監測/); });
 t('metastatic: doublet lists darolutamide', () => assert.ok(CA({ psa: 30, gp: '4', gs: '4', ct: 'T2c', cm: 'M1', mvol: 'low' }).mgmt.opts.some(x => /darolutamide 或 enzalutamide/.test(x.t))));

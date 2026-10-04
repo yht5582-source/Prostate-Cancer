@@ -227,7 +227,7 @@ input[type=date]{font:inherit;font-size:14px;color:var(--ink);background:var(--p
     <div class="eyebrow">PSA · prostate cancer early detection, risk stratification &amp; management</div>
     <h1>PSA 與攝護腺癌決策台</h1>
     <p class="sub">從年齡與 PSA 開始：系統依「篩檢資格 → PSA 判讀 → MRI 與切片 → 病理與分期 → 風險分層 → 治療」的順序，逐項提示下一個最該補的資料並說明理由。確診後同時列出 NCCN、EAU 風險分組與 CAPRA 分數，以及分期影像、生殖細胞基因檢測與治療選項。另有 PSA 倍增時間與生化復發計算。</p>
-    <div class="src"><span>AUA/SUO Early Detection 2023（2026 修訂）</span><span>EAU-EANM-ESTRO-ESUR-ISUP-SIOG Prostate Cancer 2026</span><span>NCCN Prostate Cancer v5.2026</span><span>AUA/ASTRO Localized PCa 2022</span><span>PI-RADS v2.1</span><span>UCSF-CAPRA</span></div>
+    <div class="src"><span>AUA/SUO Early Detection 2023（2026 修訂）</span><span>EAU-EANM-ESTRO-ESUR-ISUP-SIOG Prostate Cancer 2026</span><span>NCCN Prostate Cancer v5.2026</span><span>AUA/ASTRO Localized PCa 2022</span><span>PI-RADS v2.1</span><span>UCSF-CAPRA</span><span>健保藥品給付規定 115.9.22</span></div>
   </header>
 
   <nav class="tabs" role="tablist" aria-label="功能分頁">
@@ -235,9 +235,10 @@ input[type=date]{font:inherit;font-size:14px;color:var(--ink);background:var(--p
     <button class="tab" role="tab" id="tab-risk" aria-controls="risk" data-t="risk"><b>2</b>風險分層對照</button>
     <button class="tab" role="tab" id="tab-tx" aria-controls="tx" data-t="tx"><b>3</b>治療與監測</button>
     <button class="tab" role="tab" id="tab-kin" aria-controls="kin" data-t="kin"><b>4</b>PSA 追蹤與復發</button>
-    <button class="tab" role="tab" id="tab-algo" aria-controls="algo" data-t="algo"><b>5</b>流程總覽</button>
-    <button class="tab" role="tab" id="tab-cases" aria-controls="cases" data-t="cases"><b>6</b>示例病例</button>
-    <button class="tab" role="tab" id="tab-ref" aria-controls="ref" data-t="ref"><b>7</b>參考文獻</button>
+    <button class="tab" role="tab" id="tab-nhi" aria-controls="nhi" data-t="nhi"><b>5</b>健保給付</button>
+    <button class="tab" role="tab" id="tab-algo" aria-controls="algo" data-t="algo"><b>6</b>流程總覽</button>
+    <button class="tab" role="tab" id="tab-cases" aria-controls="cases" data-t="cases"><b>7</b>示例病例</button>
+    <button class="tab" role="tab" id="tab-ref" aria-controls="ref" data-t="ref"><b>8</b>參考文獻</button>
   </nav>
 
   <div class="status" id="status" aria-live="polite"></div>
@@ -453,7 +454,69 @@ input[type=date]{font:inherit;font-size:14px;color:var(--ink);background:var(--p
     </div>
   </section>
 
-  <!-- 5 algorithm -->
+  <!-- 5 NHI -->
+  <section class="pane" id="nhi" role="tabpanel" aria-labelledby="tab-nhi" hidden>
+    <p class="small muted" style="margin-bottom:12px">依健保署「藥品給付規定」第九節 抗癌瘤藥物（115.9.22 更新）與第五節 激素及影響內分泌機轉藥物（115.08.21 更新）整理。多數新型荷爾蒙藥品、olaparib、cabazitaxel、radium-223 須事前審查。申請前請以健保署最新公告原文為準。</p>
+    <div class="two">
+      <div class="stack">
+        <div class="card">
+          <h3>給付資格檢核</h3>
+          <p class="small muted" style="margin-bottom:10px">Gleason 會從引導評估的病理資料自動帶入，可在此修改。未填的條件會列為「待確認」。</p>
+          <div class="grid2" id="nhiForm"></div>
+        </div>
+        <div class="card">
+          <h3>檢核結果 <span class="pill mute" id="nhiTag"></span></h3>
+          <div class="items" id="nhiOut"><p class="small muted">先選擇疾病狀態。</p></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>共通規定</h3>
+          <ul class="plain">
+            <li><b>終生僅一種</b>新型荷爾蒙藥品：abiraterone、apalutamide、darolutamide、enzalutamide，以及 olaparib＋abiraterone，不論轉移與否終生只給付一種；除嚴重不耐受須永久停藥外，不得互換。</li>
+            <li><b>每 3 個月重新申請</b>，須附病理報告、ADT 紀錄、系列 PSA 與睪固酮。</li>
+            <li><b>停藥條件</b>（mCSPC、mCRPC）：再申請時 PSA 下降未達治療前 50% → 停藥；達最低值後上升 ≥50% 且 PSA ≥2 ng/mL → 停藥，但影像尚無進展者可繼續。</li>
+            <li><b>nmCRPC 停藥</b>：PSA progression（較 nadir 上升 ≥25% 且 ≥2 ng/mL，≥3 週後再確認）時須附影像，證實轉移即停藥；無 progression 者每 6 個月附影像。</li>
+            <li>化療前已用過 abiraterone 或 enzalutamide，化療失敗後不得再申請同藥。</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>各藥給付條件摘要</h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>藥品（規定）</th><th>給付範圍</th></tr></thead>
+            <tbody>
+              <tr><td>GnRH agonist（5.5.1）<br>Degarelix（5.5.1.1）</td><td>依許可證用於前列腺癌；degarelix 限成年男性晚期荷爾蒙依賴型前列腺癌</td></tr>
+              <tr><td>Bicalutamide（9.40）</td><td>併用 LHRH 類似劑或手術去勢，用於進展性攝護腺癌</td></tr>
+              <tr><td>Flutamide、buserelin（9.39）</td><td>晚期（T3、淋巴結或遠端轉移）；根除術後 PSA 上升；T2–T3 根治性治療前的前導治療</td></tr>
+              <tr><td>Abiraterone（9.49）</td><td>高風險 mCSPC（ECOG ≤1，36 個月；Ateron 24 個月）；化療前 mCRPC；docetaxel ≥2 療程無效後 mCRPC（ECOG ≤2）；併 olaparib（BRCA）</td></tr>
+              <tr><td>Enzalutamide（9.54）</td><td>高風險 nmCRPC；高風險 mCSPC（36 個月）；化療前 mCRPC；docetaxel 後 mCRPC</td></tr>
+              <tr><td>Apalutamide（9.90）</td><td>高風險 nmCRPC；高風險 mCSPC（36 個月）</td></tr>
+              <tr><td>Darolutamide（9.94）</td><td>高風險 mCSPC，單用或併 docetaxel（36 個月；docetaxel 6 療程）；高風險 nmCRPC</td></tr>
+              <tr><td>Docetaxel（9.3）</td><td>荷爾蒙治療失敗之轉移性前列腺癌；併 darolutamide 用於高風險 mCSPC</td></tr>
+              <tr><td>Cabazitaxel（9.137）</td><td>mCRPC，docetaxel ≥3 療程且新型荷爾蒙藥品後惡化，ECOG ≤1；上限 7 療程</td></tr>
+              <tr><td>Olaparib（9.85-3）</td><td>BRCA1/2（germline 或 somatic）mCRPC：新型荷爾蒙藥品後惡化單用；或未化療、未用過新型荷爾蒙藥品時併 abiraterone</td></tr>
+              <tr><td>Radium-223（9.68）</td><td>CRPC 有症狀骨轉移 ≥2 處、無臟器轉移；最多 6 療程</td></tr>
+              <tr><td>Estramustine（9.19）</td><td>晚期前列腺癌，荷爾蒙治療無效，或預後不佳的初次治療</td></tr>
+              <tr><td>Zoledronic acid 4 mg（5.5.3.2.1）<br>Denosumab Xgeva（5.5.4）</td><td>前列腺癌併蝕骨性骨轉移</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note" style="margin-top:10px">健保「高風險 mCSPC」＝下列 ≥2 項：Gleason ≥8；骨掃描 ≥3 處且 ≥1 處在脊椎與骨盆以外；內臟轉移。<br>健保「高風險 nmCRPC」＝PSADT ≤10 個月（線性迴歸；≥3 個連續 PSA 皆 ≥0.2 且最高 &gt;1.0；含 ADT 期間數值、最近 3 個月內一筆；首末間隔 8 週至 12 個月）、ECOG ≤1、3 個月內影像無遠端轉移。</p>
+        </div>
+        <div class="card">
+          <h3>指引建議但健保未給付</h3>
+          <ul class="plain">
+            <li>非高風險（低負擔）mCSPC 的 ADT＋ARPI：NCCN、EAU 建議所有適合者強化治療，健保只給付高風險。</li>
+            <li>Abiraterone＋docetaxel 三合一（PEACE-1）。</li>
+            <li>極高風險局限性或 N1 M0 的放療＋ADT＋abiraterone（STAMPEDE）：健保 abiraterone 限轉移性或 CRPC。</li>
+            <li>高風險生化復發的 enzalutamide（EMBARK）。</li>
+            <li>177Lu-PSMA（Pluvicto）：第九節未列。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 algorithm -->
   <section class="pane" id="algo" role="tabpanel" aria-labelledby="tab-algo" hidden>
     <div class="card">
       <h3>流程總覽 <span class="pill ev">藍框＝目前病人走到的節點</span></h3>
@@ -504,19 +567,20 @@ input[type=date]{font:inherit;font-size:14px;color:var(--ink);background:var(--p
     </div>
   </section>
 
-  <!-- 6 cases -->
+  <!-- 7 cases -->
   <section class="pane" id="cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
     <p class="muted small" style="margin-bottom:12px">載入示例會覆蓋目前輸入（可先用「複製摘要」保存）。示例數值為教學用的虛構資料。</p>
     <div class="cases" id="caseList"></div>
   </section>
 
-  <!-- 7 references -->
+  <!-- 8 references -->
   <section class="pane" id="ref" role="tabpanel" aria-labelledby="tab-ref" hidden>
     <div class="card">
       <h3>參考文獻</h3>
       <ol class="refs" id="refList"></ol>
       <div class="sub-h" style="margin-top:18px">更新紀錄</div>
       <ul class="plain small">
+        <li>2026-10-04：新增「健保給付」分頁（藥品給付規定第九節 115.9.22、第五節 115.08.21 版）：給付資格檢核、共通規定、各藥摘要、指引建議但未給付項目；PSA 追蹤分頁加入健保 nmCRPC PSADT 計算條件檢核。</li>
         <li>2026-10-04：初版。依 NCCN v5.2026（取消極低風險；極高風險改為 ≥2 項 cT3–4、GG4–5、PSA ≥40）、EAU 2026（新版風險分組表；PI-RADS ≤2 用 PSAD &lt;0.20、PI-RADS 3 用 PSAD &lt;0.10 且無家族史決定不切片；標靶＋周邊取樣）、AUA 2023（2026 修訂）核對。篩檢資格與追蹤間隔、PSA 判讀（5-ARI、free PSA、PSA density）、MRI／切片決策、NCCN／EAU 風險分組、CAPRA、分期影像、生殖細胞基因檢測、治療選項、主動監測、PSA 倍增時間與生化復發、示例病例。</li>
       </ul>
     </div>
@@ -1038,6 +1102,102 @@ function kinetics(rows, ctx) {
   return o;
 }
 
+/* ---------- Taiwan NHI reimbursement (藥品給付規定 第九節 115.9.22、第五節 115.08.21 版) ---------- */
+const NHI_VER = '健保署藥品給付規定：第九節 抗癌瘤藥物（115.9.22 更新）、第五節 激素及影響內分泌機轉藥物（115.08.21 更新）';
+function nhiHighRisk(n) {
+  const met = [n.gs8 && 'Gleason ≥8', n.bone3 && '骨掃描 ≥3 處且 ≥1 處在脊椎／骨盆外', n.visceral && '內臟轉移'].filter(Boolean);
+  const unknown = [n.gs8, n.bone3, n.visceral].filter(v => v === undefined || v === null || v === '').length;
+  return { ok: met.length >= 2, met, undetermined: met.length < 2 && met.length + unknown >= 2 };
+}
+function nhi(n) {
+  n = n || {};
+  const I = [];
+  const b = v => v === true ? true : v === false ? false : null;
+  const not = v => v === true ? false : v === false ? true : null;
+  const ecog = n.ecog === undefined || n.ecog === null || n.ecog === '' ? null : Number(n.ecog);
+  const doce = num(n.doce);
+  const nha = n.nha || null; // 'none' | 'abiShort' | 'used'
+  const le = (x, max) => x === null ? null : x <= max;
+  // cond = [true/false/null, text if false, text if unknown, text if true]
+  const item = (d, rule, conds, notes) => {
+    const v = conds.map(c => c[0]);
+    const st = v.some(x => x === false) ? 'no' : v.every(x => x === true) ? 'yes' : 'check';
+    const why = [];
+    conds.forEach(c => { if (c[0] === false) why.push(c[1]); else if (c[0] === null) why.push('待確認：' + c[2]); else if (c[3]) why.push(c[3]); });
+    I.push({ d, rule, st, why: why.concat(notes || []) });
+  };
+  const LIFE = '已用過新型荷爾蒙藥品：終生僅給付一種，不得換藥（嚴重不耐受除外）';
+  const nhaQ = '是否用過新型荷爾蒙藥品';
+  const bone = [b(n.boneMets), '無骨轉移', '是否有骨轉移'];
+  if (!n.stage) return { items: I, hr: null };
+  if (n.stage === 'mcspc') {
+    const hr = nhiHighRisk(n);
+    const hrC = [hr.ok ? true : hr.undetermined ? null : false, `未達健保高風險（${hr.met.length}/3 項，需 ≥2 項）：需自費`, '高風險條件（需 ≥2 項）', `高風險：${hr.met.join('、')}`];
+    const nhaC = [nha === null ? null : nha !== 'used', LIFE, nhaQ];
+    item('ADT（GnRH agonist、degarelix 或睪丸切除）', '5.5.1、5.5.1.1', [], ['GnRH analogue 依許可證用於前列腺癌；degarelix 限晚期荷爾蒙依賴型前列腺癌']);
+    item('Abiraterone＋ADT＋prednisone/prednisolone', '9.49-1', [hrC, nhaC, [le(ecog, 1), 'ECOG 須 ≤1', 'ECOG']], ['總療程上限 36 個月（Ateron 為 24 個月）；每 3 個月重新申請']);
+    ['Enzalutamide＋ADT|9.54-2', 'Apalutamide＋ADT|9.90-2', 'Darolutamide＋ADT|9.94-1'].forEach(x => { const [d, r] = x.split('|'); item(d, r, [hrC, nhaC], ['總療程上限 36 個月；每 3 個月重新申請']); });
+    item('Darolutamide＋docetaxel＋ADT（三合一）', '9.94-1(5)、9.3', [hrC, nhaC, [le(ecog, 1), 'ECOG 須 ≤1', 'ECOG'], [b(n.labs), '檢驗條件不符', 'ANC ≥1500、PLT ≥10 萬、GPT ≤2×ULN、bilirubin ≤ULN、eGFR ≥30']], ['docetaxel 限 6 個療程']);
+    item('Abiraterone＋docetaxel＋ADT（三合一）', '—', [[false, '健保規定未列此組合（docetaxel 用於 mCSPC 只限併用 darolutamide）', '']]);
+    item('Zoledronic acid 4 mg 或 denosumab（Xgeva）', '5.5.3.2.1、5.5.4', [bone], ['規定文字為「併有蝕骨性骨轉移」']);
+    return { items: I, hr };
+  }
+  if (n.stage === 'nmcrpc') {
+    const p = num(n.psadt);
+    const conds = [[le(p, 10), `PSADT ${p} 個月 >10`, 'PSA 倍增時間（線性迴歸，見「PSA 追蹤與復發」分頁）', p !== null ? `PSADT ${p} 個月 ≤10` : null], [le(ecog, 1), 'ECOG 須 ≤1', 'ECOG'], [b(n.noMets), '影像有遠端轉移：屬 mCRPC', '3 個月內影像無遠端轉移'], [nha === null ? null : nha !== 'used', LIFE, nhaQ]];
+    ['Enzalutamide|9.54-1', 'Apalutamide|9.90-1', 'Darolutamide|9.94-2'].forEach(x => { const [d, r] = x.split('|'); item(d, r, conds, ['每 3 個月重新申請；PSA progression 時須附影像，證實轉移即停藥']); });
+    item('Abiraterone', '9.49', [[false, '健保未給付於 nmCRPC', '']]);
+    return { items: I, hr: null };
+  }
+  // mCRPC
+  const fast = n.fastCRPC === true && n.gs8 === true ? false : (n.fastCRPC === false || n.gs8 === false) ? true : null;
+  item('Abiraterone 或 enzalutamide（化療前）', '9.49-2、9.54-3', [
+    [doce === null ? null : doce === 0, '已接受化療：見「docetaxel 後」', '是否已接受 docetaxel'],
+    [le(ecog, 1), 'ECOG 須 0–1', 'ECOG'],
+    [not(n.symptomatic), '需常規使用止痛藥（有症狀）', '無症狀或輕度症狀（未常規使用止痛藥）'],
+    [not(n.visceral), '有臟器轉移', '3 個月內影像無臟器轉移'],
+    [fast, 'ADT 後 <12 個月即成 CRPC 且 Gleason ≥8：須先化療', 'ADT 到 CRPC 是否 <12 個月、Gleason 是否 ≥8'],
+    [nha === null ? null : nha === 'none', LIFE, nhaQ]], ['每 3 個月重新申請']);
+  item('Docetaxel', '9.3-2(3)', [], ['荷爾蒙治療失敗之轉移性前列腺癌']);
+  item('Abiraterone 或 enzalutamide（docetaxel 後）', '9.49-3、9.54-4', [
+    [doce === null ? null : doce >= 2, 'docetaxel 須 ≥2 個療程', 'docetaxel 療程數'],
+    [b(n.doceFail), 'docetaxel 須治療無效', 'docetaxel 是否無效'],
+    [le(ecog, 2), 'ECOG 須 ≤2', 'ECOG'],
+    [nha === null ? null : nha === 'none', '化療前已用過者，化療失敗後不得再申請；且終生僅給付一種', nhaQ]]);
+  item('Olaparib 單獨使用', '9.85-3(1)', [
+    [b(n.brca), '無 BRCA1/2 致病變異', 'germline 或 somatic BRCA1/2 致病變異（需檢測報告）'],
+    [nha === null ? null : nha === 'used', '須先接受新型荷爾蒙藥品治療後惡化', nhaQ]], ['不得併用化療；每 3 個月重新申請']);
+  item('Olaparib＋abiraterone', '9.85-3(2)', [
+    [b(n.brca), '無 BRCA1/2 致病變異', 'germline 或 somatic BRCA1/2 致病變異'],
+    [nha === null ? null : nha !== 'used', '已用過新型荷爾蒙藥品（只允許 mCRPC 期 abiraterone ≤4 個月且未惡化）', nhaQ],
+    [doce === null ? null : doce === 0, '須尚未接受化療', '是否已接受 docetaxel']], ['計入「終生僅一種」新型荷爾蒙治療']);
+  item('Cabazitaxel', '9.137', [
+    [doce === null ? null : doce >= 3, 'docetaxel 須 ≥3 個療程', 'docetaxel 療程數'],
+    [nha === null ? null : nha === 'used', '須新型荷爾蒙藥品治療後惡化', nhaQ],
+    [le(ecog, 1), 'ECOG 須 ≤1', 'ECOG']], ['總療程上限 7 個療程；不得併用新型荷爾蒙藥品或 olaparib']);
+  item('Radium-223', '9.68', [
+    [b(n.boneSymp2), '須有症狀骨轉移 ≥2 處', '有症狀（需常規止痛）骨轉移 ≥2 處'],
+    [not(n.visceral), '有臟器轉移', '3 個月內影像無臟器轉移']], ['最多 6 個療程；不得併用 abiraterone、enzalutamide、denosumab 或雙磷酸鹽']);
+  item('177Lu-PSMA（Pluvicto）', '—', [[false, '第九節（115.9.22 版）未列：自費', '']]);
+  item('Zoledronic acid 4 mg 或 denosumab（Xgeva）', '5.5.3.2.1、5.5.4', [bone], ['規定文字為「併有蝕骨性骨轉移」；與 radium-223 不得併用']);
+  return { items: I, hr: null };
+}
+/* NHI data rules for nmCRPC PSADT (9.54-1、9.90-1、9.94-2) */
+function nhiPsadtCheck(rows, now) {
+  const pts = (rows || []).map(r => ({ t: Date.parse(r.date), v: num(r.psa) })).filter(p => isFinite(p.t) && p.v !== null).sort((a, b) => a.t - b.t);
+  const D = 864e5, fails = [], oks = [];
+  (pts.length >= 3 ? oks : fails).push(`至少 3 個連續 PSA（目前 ${pts.length} 個）`);
+  if (pts.length) {
+    (pts.every(p => p.v >= 0.2) ? oks : fails).push('每個數值 ≥0.2 ng/mL');
+    (Math.max(...pts.map(p => p.v)) > 1.0 ? oks : fails).push('最高值 >1.0 ng/mL');
+    const span = (pts[pts.length - 1].t - pts[0].t) / D;
+    (span >= 56 && span <= 365.25 ? oks : fails).push(`首末間隔 ≥8 週且 ≤12 個月（目前 ${Math.round(span)} 天）`);
+    const nowT = now === undefined ? Date.now() : now;
+    ((nowT - pts[pts.length - 1].t) / D <= 92 ? oks : fails).push('最近一筆在 3 個月內');
+  }
+  return { ok: fails.length === 0, fails, oks, note: '需包含 ADT 治療期間的數值' };
+}
+
 /* ---------- summary text ---------- */
 function summary(s) {
   const R = evaluate(s), d = R.d, L = [];
@@ -1066,7 +1226,7 @@ function summary(s) {
   return L.join('\n');
 }
 
-const api = { TH, F, LAYERS, NCCN_LABEL, EAU_LABEL, derive, gradeGroup, screening, interpret, biopsyDecision, nccn, lowVolume, eau, capra, imaging, germline, management, stampedeHR, evaluate, kinetics, summary, filled };
+const api = { NHI_VER, nhi, nhiHighRisk, nhiPsadtCheck, TH, F, LAYERS, NCCN_LABEL, EAU_LABEL, derive, gradeGroup, screening, interpret, biopsyDecision, nccn, lowVolume, eau, capra, imaging, germline, management, stampedeHR, evaluate, kinetics, summary, filled };
 if (typeof module !== 'undefined') module.exports = api;
 return api;
 })();
@@ -1076,7 +1236,7 @@ return api;
 const $ = id => document.getElementById(id);
 const esc = x => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 const LS = 'prostate-psa-case-v1';
-const blank = () => ({ _pending: [], _log: [], _series: [], _k: { setting: 'none' } });
+const blank = () => ({ _pending: [], _log: [], _series: [], _k: { setting: 'none' }, _nhi: {} });
 let S = (() => { try { const x = JSON.parse(localStorage.getItem(LS)); if (x && typeof x === 'object') return Object.assign(blank(), x); } catch (e) {} return blank(); })();
 const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
 let R = null;
@@ -1196,6 +1356,8 @@ function renderRisk() {
     if (R.mgmt.leNote) m += `<p class="small muted" style="margin-bottom:6px">${esc(R.mgmt.leNote)}</p>`;
     m += `<div class="items">${R.mgmt.opts.map(o => `<div class="opt ${o.pref ? 'pref' : ''}"><b>${esc(o.t)}${o.pref ? ' <span class="pill go">首選</span>' : ''}</b>${o.x ? `<span>${esc(o.x)}</span>` : ''}</div>`).join('')}</div>`;
     if (S.crib && ['low', 'fint'].includes(n.id)) m += alertHTML({ c: 'warn', t: '有 cribriform／intraductal：主動監測的適合度降低', x: '這些病理特徵與較差預後相關，多數專家不建議納入主動監測。' });
+    if (n.id === 'met') m += alertHTML({ c: 'info', t: '健保：新型荷爾蒙藥品只給付「高風險」mCSPC', x: `需 ≥2 項：Gleason ≥8${R.d.gg !== null ? (R.d.gg >= 4 ? '（本例符合）' : '（本例不符）') : ''}、骨掃描 ≥3 處且 ≥1 處在脊椎／骨盆外、內臟轉移。三合一只給付 darolutamide＋docetaxel。詳見「健保給付」分頁。` });
+    if (n.id === 'vhigh' || n.id === 'reg') m += alertHTML({ c: 'info', t: '健保：放療併 abiraterone（STAMPEDE）不在給付範圍', x: '健保 abiraterone 限轉移性去勢敏感（高風險）或去勢抗性；M0 使用需自費。' });
     m += `<p class="small muted" style="margin-top:8px">治療選擇需經多專科討論，並依病人偏好、排尿與性功能、共病調整。</p>`;
   }
   $('mgmtBox').innerHTML = m;
@@ -1223,7 +1385,7 @@ function renderTables() {
 function renderAll() {
   const f = focusMark();
   R = PC.evaluate(S);
-  renderStatus(); renderAsks(); renderDecide(); renderRisk(); renderPath(); syncSheet(); renderLog(); renderTables(); renderKin();
+  renderStatus(); renderAsks(); renderDecide(); renderRisk(); renderPath(); syncSheet(); renderLog(); renderTables(); renderKin(); renderNhi();
   save();
   focusRestore(f);
 }
@@ -1316,6 +1478,11 @@ function renderKin(rebuild) {
   }
   o.notes.forEach(i => { h += `<div style="margin-top:8px">${alertHTML(i)}</div>`; });
   if (K.setting === 'none' && o.n >= 2 && o.velocity !== null) h += `<p class="note" style="margin-top:8px">AUA 2023：PSA 速度不應單獨作為切片的依據。</p>`;
+  if (K.setting === 'adt' && o.n >= 1) {
+    const c = PC.nhiPsadtCheck(S._series);
+    h += `<div style="margin-top:8px">${alertHTML({ c: c.ok ? 'go' : 'warn', t: c.ok ? '序列符合健保 nmCRPC 的 PSADT 計算條件' : '序列尚未符合健保 nmCRPC 的 PSADT 計算條件', x: [...c.fails.map(x => '✗ ' + x), ...c.oks.map(x => '✓ ' + x), c.note].join('；') })}</div>`;
+  }
+  if ((K.setting === 'rp' || K.setting === 'rt') && o.notes.some(x => /EMBARK/.test(x.t))) h += `<p class="note" style="margin-top:8px">健保：enzalutamide 未給付於生化復發（EMBARK 適應症），需自費。</p>`;
   $('kOut').innerHTML = h;
 }
 function chart(o, K) {
@@ -1351,6 +1518,66 @@ document.addEventListener('change', e => {
   if (e.target.id === 'kGG') { S._k.pathGG = e.target.value; save(); renderKin(); }
 });
 
+
+/* ---------- NHI tab ---------- */
+const YN = [['', '未確認'], ['y', '是'], ['n', '否']];
+const NF = [
+  { id: 'stage', l: '疾病狀態', o: [['', '請選擇'], ['mcspc', '轉移性去勢敏感（mCSPC）'], ['nmcrpc', '非轉移性去勢抗性（nmCRPC）'], ['mcrpc', '轉移性去勢抗性（mCRPC）']], st: 'all' },
+  { id: 'ecog', l: 'ECOG', o: [['', '未確認'], ['0', '0'], ['1', '1'], ['2', '2'], ['3', '≥3']], st: 'all' },
+  { id: 'nha', l: '新型荷爾蒙藥品（abiraterone、apalutamide、darolutamide、enzalutamide）', o: [['', '未確認'], ['none', '從未使用'], ['abiShort', 'mCRPC 期用 abiraterone ≤4 個月、未惡化'], ['used', '已使用過（含治療後惡化）']], st: 'all' },
+  { id: 'gs8', l: 'Gleason ≥8', yn: 1, st: 'mcspc mcrpc' },
+  { id: 'bone3', l: '骨掃描 ≥3 處，且 ≥1 處在脊椎／骨盆以外', yn: 1, st: 'mcspc' },
+  { id: 'visceral', l: '內臟（臟器）轉移', yn: 1, st: 'mcspc mcrpc' },
+  { id: 'labs', l: '三合一檢驗：ANC ≥1500、PLT ≥10 萬、GPT ≤2×ULN、bilirubin ≤ULN、eGFR ≥30', yn: 1, st: 'mcspc' },
+  { id: 'psadt', l: 'PSA 倍增時間（個月）', num: 1, st: 'nmcrpc' },
+  { id: 'noMets', l: '3 個月內影像無遠端轉移', yn: 1, st: 'nmcrpc' },
+  { id: 'doce', l: '已接受 docetaxel 療程數', num: 1, st: 'mcrpc' },
+  { id: 'doceFail', l: 'Docetaxel 治療無效', yn: 1, st: 'mcrpc' },
+  { id: 'symptomatic', l: '有症狀（需常規使用止痛藥）', yn: 1, st: 'mcrpc' },
+  { id: 'fastCRPC', l: 'ADT 開始後 <12 個月即成 CRPC', yn: 1, st: 'mcrpc' },
+  { id: 'brca', l: 'BRCA1/2 致病變異（germline 或 somatic）', yn: 1, st: 'mcrpc' },
+  { id: 'boneSymp2', l: '有症狀骨轉移 ≥2 處', yn: 1, st: 'mcrpc' },
+  { id: 'boneMets', l: '有骨轉移', yn: 1, st: 'mcspc mcrpc' }
+];
+function nhiState() {
+  const n = Object.assign({}, S._nhi || {});
+  if (n.gs8 === undefined && R && R.d.gg !== null) n.gs8 = R.d.gg >= 4;
+  if (n.stage === 'nmcrpc' && n.psadt === undefined && S._k && S._k.setting === 'adt') { const k = PC.kinetics(S._series, S._k); if (k.psadt) n.psadt = k.psadt; }
+  return n;
+}
+function renderNhi() {
+  const n = nhiState();
+  const val = (f) => { const v = n[f.id]; if (f.yn) return v === true ? 'y' : v === false ? 'n' : ''; return v === undefined || v === null ? '' : String(v); };
+  const auto = (f) => (S._nhi || {})[f.id] === undefined && n[f.id] !== undefined ? ' <span class="pill ev">自動帶入</span>' : '';
+  $('nhiForm').innerHTML = NF.filter(f => f.st === 'all' || (n.stage && f.st.split(' ').includes(n.stage))).map(f => {
+    if (f.num) return `<label class="field"><span class="flabel">${esc(f.l)}${auto(f)}</span><span class="inl"><input type="number" step="any" inputmode="decimal" data-n="${f.id}" value="${esc(val(f))}"></span></label>`;
+    const o = f.yn ? YN : f.o;
+    return `<label class="field"><span class="flabel">${esc(f.l)}${auto(f)}</span><select data-n="${f.id}">${o.map(x => `<option value="${x[0]}" ${val(f) === x[0] ? 'selected' : ''}>${esc(x[1])}</option>`).join('')}</select></label>`;
+  }).join('');
+  const r = PC.nhi(n);
+  const lab = { yes: ['go', '可申請'], no: ['stop', '不給付'], check: ['warn', '待確認'] };
+  $('nhiTag').textContent = n.stage ? `${r.items.filter(i => i.st === 'yes').length} 項可申請` : '';
+  $('nhiOut').innerHTML = !n.stage ? '<p class="small muted">先選擇疾病狀態。</p>' :
+    (r.hr ? alertHTML({ c: r.hr.ok ? 'go' : r.hr.undetermined ? 'warn' : 'stop', t: r.hr.ok ? `符合健保高風險 mCSPC（${r.hr.met.join('、')}）` : r.hr.undetermined ? `健保高風險 mCSPC 待確認（目前 ${r.hr.met.length} 項，需 ≥2 項）` : `未達健保高風險 mCSPC（${r.hr.met.length} 項）：新型荷爾蒙藥品需自費`, x: '高風險＝Gleason ≥8、骨掃描 ≥3 處且 ≥1 處在脊椎／骨盆外、內臟轉移，三項中 ≥2 項。' }) : '') +
+    r.items.map(i => `<div class="opt ${i.st === 'yes' ? 'pref' : ''}"><b>${esc(i.d)} <span class="pill ${lab[i.st][0]}">${lab[i.st][1]}</span> <span class="pill mute">${esc(i.rule)}</span></b>${i.why.map(w => `<span>${esc(w)}</span>`).join('')}</div>`).join('');
+}
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-n]'); if (!el) return;
+  const f = NF.find(x => x.id === el.dataset.n); S._nhi = S._nhi || {};
+  let v = el.value;
+  if (f.yn) v = v === 'y' ? true : v === 'n' ? false : undefined;
+  else if (f.num) v = v === '' ? undefined : Number(v);
+  else if (v === '') v = undefined;
+  if (v === undefined) delete S._nhi[f.id]; else S._nhi[f.id] = v;
+  save();
+  setTimeout(() => { // re-render after focus has moved, then put it back on the same control
+    const a = document.activeElement, id = a && a.dataset ? a.dataset.n : null;
+    renderNhi();
+    const e2 = id && document.querySelector(`#nhiForm [data-n="${id}"]`);
+    if (e2) e2.focus({ preventScroll: true });
+  }, 0);
+});
+
 function copyText(t) {
   const done = () => toast('摘要已複製，可貼到病歷');
   if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, () => fallback());
@@ -1360,7 +1587,7 @@ function copyText(t) {
 let tt; function toast(m) { const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 1800); }
 
 /* tabs */
-const TABS = ['ws', 'risk', 'tx', 'kin', 'algo', 'cases', 'ref'];
+const TABS = ['ws', 'risk', 'tx', 'kin', 'nhi', 'algo', 'cases', 'ref'];
 function showTab(t) {
   TABS.forEach(x => { $(x).hidden = x !== t; $('tab-' + x).setAttribute('aria-selected', x === t); $('tab-' + x).tabIndex = x === t ? 0 : -1; });
   try { localStorage.setItem(LS + '-tab', t); } catch (e) {}
@@ -1407,6 +1634,7 @@ const REFS = [
   ['Cooperberg MR, Pasta DJ, Elkin EP, et al. The UCSF Cancer of the Prostate Risk Assessment score. J Urol 2005;173:1938–1942.', 'https://doi.org/10.1097/01.ju.0000158155.33890.e7'],
   ['Epstein JI, Egevad L, Amin MB, et al. The 2014 ISUP Consensus Conference on Gleason Grading. Am J Surg Pathol 2016;40:244–252.', 'https://doi.org/10.1097/PAS.0000000000000530'],
   ['US Preventive Services Task Force. Screening for Prostate Cancer: Recommendation Statement. JAMA 2018;319:1901–1913（2026 年仍為現行版，更新中）.', 'https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prostate-cancer-screening'],
+  ['衛生福利部中央健康保險署。全民健康保險藥品給付規定：第九節 抗癌瘤藥物（115.9.22 更新）；第五節 激素及影響內分泌機轉藥物（115.08.21 更新）。', 'https://www.nhi.gov.tw/ch/cp-7593-ad2a9-3397-1.html'],
   ['Roach M 3rd, Hanks G, Thames H Jr, et al. Defining biochemical failure following radiotherapy (Phoenix definition). Int J Radiat Oncol Biol Phys 2006;65:965–974.', 'https://doi.org/10.1016/j.ijrobp.2006.04.029'],
   ['James ND, et al. Abiraterone for prostate cancer not previously treated with hormone therapy (STAMPEDE). N Engl J Med 2017;377:338–351；Attard G, et al. Lancet 2022;399:447–460.', 'https://doi.org/10.1016/S0140-6736(21)02437-5'],
   ['Freedland SJ, et al. Improved outcomes with enzalutamide in biochemically recurrent prostate cancer (EMBARK). N Engl J Med 2023;389:1453–1465.', 'https://doi.org/10.1056/NEJMoa2303974'],

@@ -16,9 +16,10 @@
 2. 風險分層對照：NCCN v5.2026、EAU 2026、ISUP grade group、UCSF-CAPRA（目前病人所在列會高亮）；低風險另標示「低腫瘤量」（舊版 NCCN 極低條件）
 3. 治療與監測：各風險組治療選項、主動監測排程、CHAARTED 轉移負擔
 4. PSA 追蹤與復發：PSA 倍增時間（對數迴歸）、術後／放療後生化復發定義、EAU 復發風險、EMBARK、nmCRPC
-5. 流程總覽
-6. 示例病例（虛構教學資料）
-7. 參考文獻
+5. 健保給付：依藥品給付規定第九節（115.9.22）、第五節（115.08.21）做給付資格檢核（mCSPC、nmCRPC、mCRPC），列出共通規定（終生僅一種新型荷爾蒙藥品、停藥條件）、各藥摘要，以及指引建議但健保未給付的項目；PSA 追蹤分頁另檢核健保 nmCRPC 的 PSADT 計算條件
+6. 流程總覽
+7. 示例病例（虛構教學資料）
+8. 參考文獻
 
 ## 開發
 
@@ -36,6 +37,7 @@ node tests.cjs
 - AUA/ASTRO Clinically Localized Prostate Cancer Guideline, 2022
 - PI-RADS v2.1；ISUP 2014 Gleason grading；UCSF-CAPRA
 - STAMPEDE、CHAARTED、EMBARK 試驗；Phoenix 定義
+- 衛生福利部中央健康保險署：全民健康保險藥品給付規定 第九節 抗癌瘤藥物（115.9.22 更新）、第五節 激素及影響內分泌機轉藥物（115.08.21 更新）
 
 ## 醫療安全聲明
 
