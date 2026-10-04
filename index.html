@@ -1,0 +1,1404 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="PSA 與攝護腺癌決策台：從篩檢資格、PSA 判讀、MRI 與切片決策，到 NCCN／EAU 風險分層、CAPRA、分期影像、基因檢測與治療選項，並附 PSA 倍增時間與生化復發計算。">
+<title>PSA 與攝護腺癌決策台</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;700&family=Noto+Sans+TC:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: clinical console — masthead + numbered tabs; workspace = guided navigator (left) + layered data sheet (right) */
+:root{
+  --paper:#f3f6f6; --panel:#ffffff; --ink:#152224; --ink-2:#47585b; --ink-3:#788a8d; --line:#d3dddd; --line-2:#e6eded;
+  --accent:#17707f; --accent-ink:#ffffff; --accent-soft:#e0f0f2;
+  --go:#2d7a4c; --go-soft:#e2f1e7; --warn:#946708; --warn-soft:#faf0d9; --stop:#b3372b; --stop-soft:#f8e2de;
+  --f-display:"Noto Serif TC","Songti TC","PMingLiU",serif;
+  --f-body:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){
+  --paper:#0e1516; --panel:#162022; --ink:#e3eced; --ink-2:#a2b2b4; --ink-3:#738588; --line:#283537; --line-2:#1e292b;
+  --accent:#6cc3d1; --accent-ink:#082226; --accent-soft:#16313a;
+  --go:#65c48b; --go-soft:#162a1f; --warn:#e4b852; --warn-soft:#2d2612; --stop:#f08a7a; --stop-soft:#381e1a; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --paper:#0e1516; --panel:#162022; --ink:#e3eced; --ink-2:#a2b2b4; --ink-3:#738588; --line:#283537; --line-2:#1e292b;
+  --accent:#6cc3d1; --accent-ink:#082226; --accent-soft:#16313a;
+  --go:#65c48b; --go-soft:#162a1f; --warn:#e4b852; --warn-soft:#2d2612; --stop:#f08a7a; --stop-soft:#381e1a; color-scheme:dark }
+:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.65}
+.wrap{max-width:1260px;margin:0 auto;padding-inline:20px;padding-block:0 56px}
+@media (max-width:520px){.wrap{padding-inline:16px}}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;font-weight:700;letter-spacing:.01em}
+h1{font-size:clamp(24px,3.2vw,32px);line-height:1.25}
+h3{font-size:16.5px}
+h4{margin:0;font-size:14px;font-weight:700}
+p{margin:0}
+.muted{color:var(--ink-2)} .small{font-size:13px}
+.eyebrow{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);font-weight:500}
+.masthead{padding-block:28px 0;display:grid;gap:8px}
+.masthead .sub{color:var(--ink-2);max-width:80ch}
+.src{display:flex;flex-wrap:wrap;gap:6px;margin-top:4px}
+.src span{font-size:12px;border:1px solid var(--line);border-radius:999px;padding:2px 10px;color:var(--ink-2);background:var(--panel)}
+.tabs{display:flex;gap:4px;margin-top:18px;border-bottom:1px solid var(--line);overflow-x:auto}
+.tab{appearance:none;border:0;background:none;font:inherit;color:var(--ink-2);padding:10px 14px 11px;cursor:pointer;border-bottom:2.5px solid transparent;white-space:nowrap;font-weight:500}
+.tab b{font-family:var(--f-mono);font-weight:500;color:var(--ink-3);margin-right:6px;font-size:13px}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab[aria-selected="true"] b{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+section.pane{padding-top:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:16px 18px;min-width:0}
+.card>h3{margin-bottom:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.stack{display:grid;gap:16px;min-width:0}
+.field{display:grid;gap:4px;min-width:0;align-content:start}
+.field>.flabel{font-size:12.5px;color:var(--ink-2);font-weight:500}
+.field .hint{font-size:11.5px;color:var(--ink-3);line-height:1.4}
+input[type=number],select{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:6px 8px;min-width:0;max-width:100%}
+input[type=number]{width:104px;font-family:var(--f-mono)}
+select{width:100%}
+.u{font-size:12px;color:var(--ink-3);font-family:var(--f-mono);white-space:nowrap}
+.inl{display:flex;gap:6px;align-items:center}
+.check{display:flex;gap:8px;align-items:flex-start;font-size:14px;cursor:pointer;padding:3px 0;line-height:1.5}
+.check input{margin-top:4px;accent-color:var(--accent);flex:none}
+.check.confirm{font-weight:700;color:var(--accent);border-top:1px dashed var(--line);padding-top:8px;margin-top:4px}
+.btn{appearance:none;font:inherit;font-size:13.5px;border:1px solid var(--line);background:var(--panel);color:var(--ink);border-radius:7px;padding:6px 12px;cursor:pointer;font-weight:500}
+.btn:hover{border-color:var(--accent)}
+.btn.primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.btn.sm{font-size:12.5px;padding:3px 10px}
+.pill{display:inline-block;font-size:11.5px;font-weight:500;border-radius:999px;padding:1px 9px;white-space:nowrap;vertical-align:1px}
+.pill.ev{background:var(--accent-soft);color:var(--accent)}
+.pill.go{background:var(--go-soft);color:var(--go)} .pill.warn{background:var(--warn-soft);color:var(--warn)} .pill.stop{background:var(--stop-soft);color:var(--stop)}
+.pill.mute{background:var(--line-2);color:var(--ink-2)}
+.sample{font-size:12px;color:var(--warn);background:var(--warn-soft);border-radius:999px;padding:1px 10px;font-weight:500}
+.note{font-size:13px;color:var(--ink-2);border-left:3px solid var(--line);padding:4px 0 4px 12px}
+.alert{border-radius:8px;padding:10px 12px;font-size:14px;display:grid;gap:4px}
+.alert.warn{background:var(--warn-soft)} .alert.warn strong{color:var(--warn)}
+.alert.stop{background:var(--stop-soft)} .alert.stop strong{color:var(--stop)}
+.alert.go{background:var(--go-soft)} .alert.go strong{color:var(--go)}
+.alert.info{background:var(--accent-soft)} .alert.info strong{color:var(--accent)}
+ul.plain{margin:6px 0 0;padding-left:18px;display:grid;gap:4px;font-size:14px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line-2);vertical-align:top}
+th{font-weight:500;color:var(--ink-2);font-size:12.5px;white-space:nowrap}
+.tablebox{overflow-x:auto}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+.two{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,1fr);gap:18px;align-items:start}
+@media (max-width:1020px){.two{grid-template-columns:minmax(0,1fr)}}
+.grid2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px}
+@media (max-width:640px){.grid2{grid-template-columns:minmax(0,1fr)}}
+.sub-h{font-size:12.5px;color:var(--ink-2);font-weight:500;margin:14px 0 6px}
+.sub-h:first-child{margin-top:0}
+
+/* status strip */
+.status{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 92%,transparent);backdrop-filter:blur(6px);padding:10px 0;border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+.status .kbox{font-family:var(--f-mono);font-size:26px;line-height:1;font-weight:500}
+.status .kbox small{font-size:12px;color:var(--ink-3);margin-left:4px}
+.status .grow{flex:1 1 220px;min-width:0}
+.prog{height:7px;border-radius:4px;background:var(--line-2);overflow:hidden;margin-top:5px}
+.prog i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.lvl{font-size:13px;font-weight:700;border-radius:7px;padding:5px 10px}
+.lvl.emergent{background:var(--stop);color:#fff} .lvl.urgent{background:var(--warn-soft);color:var(--warn)} .lvl.routine{background:var(--go-soft);color:var(--go)} .lvl.unknown,.lvl.none{background:var(--line-2);color:var(--ink-2)}
+
+/* guided asks */
+.ask{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:9px;padding:11px 13px;display:grid;gap:8px;background:var(--panel)}
+.ask.now{border-left-color:var(--stop)}
+.ask.later{border-left-color:var(--line)}
+.ask .ah{display:flex;gap:8px;align-items:baseline;justify-content:space-between;flex-wrap:wrap}
+.ask .ah h4{font-size:14.5px}
+.ask .why{font-size:13px;color:var(--ink-2)}
+.ask .fields{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:flex-start}
+.ask .fields .field{flex:0 1 auto}
+.ask .fields .field.wide{flex:1 1 260px}
+.ask .checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 14px;width:100%}
+@media (max-width:640px){.ask .checks{grid-template-columns:minmax(0,1fr)}}
+.ask .acts{display:flex;gap:8px;flex-wrap:wrap}
+.asklist{display:grid;gap:10px}
+details.more>summary{cursor:pointer;font-size:13px;color:var(--ink-2);padding:4px 0}
+.pend{display:flex;justify-content:space-between;gap:8px;align-items:center;font-size:13.5px;padding:5px 0;border-bottom:1px dashed var(--line-2)}
+
+/* ddx */
+.dx{border:1px solid var(--line-2);border-radius:8px;padding:9px 12px;display:grid;gap:4px}
+.dx .dh{display:flex;justify-content:space-between;gap:8px;align-items:baseline;flex-wrap:wrap}
+.dx .dh b{font-size:14.5px}
+.dx ul{margin:0;padding-left:18px;font-size:13px;color:var(--ink-2)}
+.dx .nx{font-size:12.8px;color:var(--accent)}
+.dx.confirmed{border-color:var(--go);box-shadow:0 0 0 1px var(--go) inset}
+.dx.likely{border-color:var(--accent)}
+.dx.unlikely{opacity:.62}
+.dxlist{display:grid;gap:8px}
+.final{border-radius:10px;padding:12px 14px;background:var(--go-soft)}
+.final b{color:var(--go);font-size:16px}
+
+/* data sheet */
+details.layer{border:1px solid var(--line);border-radius:10px;background:var(--panel)}
+details.layer+details.layer{margin-top:10px}
+details.layer>summary{list-style:none;cursor:pointer;padding:11px 14px;display:flex;gap:10px;align-items:center}
+details.layer>summary::-webkit-details-marker{display:none}
+details.layer>summary .n{font-family:var(--f-mono);color:var(--accent);font-weight:500;min-width:1.4ch}
+details.layer>summary .t{font-weight:700;flex:1}
+details.layer .lb{padding:2px 14px 14px;display:grid;gap:10px}
+.flash{animation:flash 1.2s ease}
+@keyframes flash{0%{box-shadow:0 0 0 3px var(--accent)}100%{box-shadow:0 0 0 0 transparent}}
+
+/* path */
+ol.path{margin:0;padding:0;list-style:none;display:grid;gap:0}
+ol.path li{display:grid;grid-template-columns:22px minmax(0,1fr);gap:8px;padding:6px 0;font-size:13.8px;border-bottom:1px dashed var(--line-2)}
+ol.path li i{font-style:normal;font-family:var(--f-mono);font-size:12px;width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:var(--line-2);color:var(--ink-3);margin-top:1px}
+ol.path li.done i{background:var(--go-soft);color:var(--go)}
+ol.path li.now i{background:var(--accent);color:var(--accent-ink)}
+ol.path li .pl{color:var(--ink-3);font-size:12.5px}
+
+/* treatment */
+.tx h4{margin:12px 0 4px;font-size:14px;color:var(--accent)}
+.tx h4:first-child{margin-top:0}
+.order{font-family:var(--f-mono);font-size:12.8px;background:var(--paper);border-radius:6px;padding:7px 10px;margin-top:6px;line-height:1.6}
+.bdr{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+.bdr .m{border:1px solid var(--line-2);border-radius:8px;padding:7px 12px;background:var(--paper);min-width:120px}
+.bdr .m .k{font-size:12px;color:var(--ink-2)}
+.bdr .m .v{font-family:var(--f-mono);font-size:19px}
+
+/* algorithm */
+.tree,.tree ul{list-style:none;margin:0;padding:0}
+.tree ul{padding-left:22px;border-left:1.5px solid var(--line);margin-left:9px}
+.tree li{position:relative;padding:4px 0 4px 12px}
+.tree ul>li::before{content:"";position:absolute;left:-1px;top:17px;width:11px;border-top:1.5px solid var(--line)}
+.tree .nd{display:inline-block;border:1px solid var(--line);border-radius:8px;padding:5px 10px;background:var(--panel);font-size:13.8px;max-width:100%}
+.tree .nd small{display:block;color:var(--ink-3);font-size:12px}
+.tree .nd.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1px var(--accent) inset}
+.tree .nd.on b{color:var(--accent)}
+
+.log{font-size:12.8px;max-height:220px;overflow:auto;display:grid;gap:2px}
+.log div{display:grid;grid-template-columns:52px minmax(0,1fr);gap:8px}
+.log .mono{color:var(--ink-3)}
+.cases{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.case{display:grid;gap:8px;align-content:start}
+.refs{padding-left:20px;margin:0;display:grid;gap:8px;font-size:13.8px}
+.refs a{color:var(--accent)}
+.disclaimer{margin-top:22px;font-size:13px;color:var(--ink-2);border-top:1px solid var(--line);padding-top:14px;max-width:90ch}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--paper);font-size:13.5px;padding:8px 16px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:9}
+.toast.show{opacity:1}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media print{
+  body{background:#fff;font-size:12.5px}
+  .tabs,.noprint,.toast,.status .acts{display:none!important}
+  .status{position:static}
+  .card{border-color:#bbb;break-inside:avoid}
+}
+</style>
+<style>
+/* PSA page additions */
+.status .phase{font-size:13px;color:var(--ink-2)}
+.status .acts{display:flex;gap:6px;flex-wrap:wrap}
+.grp{font-size:13px;font-weight:700;border-radius:7px;padding:5px 10px;background:var(--line-2);color:var(--ink-2)}
+.grp.g-low{background:var(--go-soft);color:var(--go)}
+.grp.g-fint,.grp.g-uint,.grp.g-int{background:var(--warn-soft);color:var(--warn)}
+.grp.g-high,.grp.g-vhigh,.grp.g-reg,.grp.g-met{background:var(--stop-soft);color:var(--stop)}
+tr.hl td{background:var(--accent-soft)}
+tr.hl td:first-child{box-shadow:inset 3px 0 0 var(--accent);font-weight:700}
+.items{display:grid;gap:8px}
+.opt{border:1px solid var(--line-2);border-radius:8px;padding:8px 12px;display:grid;gap:2px}
+.opt.pref{border-color:var(--go);box-shadow:0 0 0 1px var(--go) inset}
+.opt b{font-size:14.5px}
+.opt span{font-size:13px;color:var(--ink-2)}
+.why{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px}
+.why span{font-size:12px;border-radius:999px;padding:1px 9px;background:var(--line-2);color:var(--ink-2)}
+.rg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.rg{grid-template-columns:minmax(0,1fr)}}
+.rg .m{border:1px solid var(--line-2);border-radius:8px;padding:9px 12px;background:var(--paper);display:grid;gap:3px;align-content:start}
+.rg .m .k{font-size:12px;color:var(--ink-2)}
+.rg .m .v{font-size:16px;font-weight:700}
+input[type=date]{font:inherit;font-size:14px;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:7px;padding:5px 8px;max-width:100%}
+.kt td{padding:5px 8px;vertical-align:middle}
+.kchart{width:100%;height:auto;display:block;margin-top:8px}
+.kchart text{font-family:var(--f-mono);font-size:11px;fill:var(--ink-3)}
+.kchart .ax{stroke:var(--line)}
+.kchart .ln{stroke:var(--accent);fill:none;stroke-width:2}
+.kchart .pt{fill:var(--accent)}
+.kchart .th{stroke:var(--stop);stroke-dasharray:4 4}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="masthead">
+    <div class="eyebrow">PSA · prostate cancer early detection, risk stratification &amp; management</div>
+    <h1>PSA 與攝護腺癌決策台</h1>
+    <p class="sub">從年齡與 PSA 開始：系統依「篩檢資格 → PSA 判讀 → MRI 與切片 → 病理與分期 → 風險分層 → 治療」的順序，逐項提示下一個最該補的資料並說明理由。確診後同時列出 NCCN、EAU 風險分組與 CAPRA 分數，以及分期影像、生殖細胞基因檢測與治療選項。另有 PSA 倍增時間與生化復發計算。</p>
+    <div class="src"><span>AUA/SUO Early Detection 2023（2026 修訂）</span><span>EAU-EANM-ESTRO-ESUR-ISUP-SIOG Prostate Cancer 2026</span><span>NCCN Prostate Cancer v5.2026</span><span>AUA/ASTRO Localized PCa 2022</span><span>PI-RADS v2.1</span><span>UCSF-CAPRA</span></div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="功能分頁">
+    <button class="tab" role="tab" id="tab-ws" aria-controls="ws" data-t="ws"><b>1</b>引導評估</button>
+    <button class="tab" role="tab" id="tab-risk" aria-controls="risk" data-t="risk"><b>2</b>風險分層對照</button>
+    <button class="tab" role="tab" id="tab-tx" aria-controls="tx" data-t="tx"><b>3</b>治療與監測</button>
+    <button class="tab" role="tab" id="tab-kin" aria-controls="kin" data-t="kin"><b>4</b>PSA 追蹤與復發</button>
+    <button class="tab" role="tab" id="tab-algo" aria-controls="algo" data-t="algo"><b>5</b>流程總覽</button>
+    <button class="tab" role="tab" id="tab-cases" aria-controls="cases" data-t="cases"><b>6</b>示例病例</button>
+    <button class="tab" role="tab" id="tab-ref" aria-controls="ref" data-t="ref"><b>7</b>參考文獻</button>
+  </nav>
+
+  <div class="status" id="status" aria-live="polite"></div>
+
+  <!-- 1 workspace -->
+  <section class="pane" id="ws" role="tabpanel" aria-labelledby="tab-ws">
+    <div class="two">
+      <div class="stack">
+        <div class="card">
+          <h3>下一步：請補這些資料 <span class="pill ev" id="askCount"></span></h3>
+          <p class="small muted" style="margin-bottom:10px">直接在卡片內填寫，填完後系統會換成下一個問題。檢查已安排、結果還沒出來，可以按「待回報」，系統會先用現有資料往下判斷。</p>
+          <div class="asklist" id="asks"></div>
+          <div id="laterBox"></div>
+        </div>
+        <div class="card" id="pendCard" hidden>
+          <h3>已安排、待回報</h3>
+          <div id="pending"></div>
+        </div>
+        <div class="card">
+          <h3>判讀與決策</h3>
+          <div class="items" id="decide"></div>
+        </div>
+        <div class="card" id="riskCard" hidden>
+          <h3>風險分層 <span class="pill mute" id="riskTag"></span></h3>
+          <div id="riskBox"></div>
+        </div>
+        <div class="card" id="mgmtCard" hidden>
+          <h3>分期影像、基因檢測與治療選項</h3>
+          <div id="mgmtBox"></div>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>分層路徑</h3>
+          <ol class="path" id="path"></ol>
+        </div>
+        <div>
+          <div class="sub-h" style="display:flex;justify-content:space-between;align-items:center">完整資料表（可隨時修改任一層） <button class="btn sm noprint" id="expandAll" type="button">全部展開</button></div>
+          <div id="sheet"></div>
+        </div>
+        <div class="card">
+          <h3>資料增補紀錄</h3>
+          <div class="log" id="log"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 risk tables -->
+  <section class="pane" id="risk" role="tabpanel" aria-labelledby="tab-risk" hidden>
+    <div class="two">
+      <div class="stack">
+        <div class="card">
+          <h3>NCCN 初始風險分組 <span class="pill ev">藍底＝目前病人</span></h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>分組</th><th>條件</th></tr></thead>
+            <tbody>
+              <tr data-g="low"><td>低</td><td>cT1–cT2a、GG1、PSA &lt;10</td></tr>
+              <tr data-g="fint"><td>有利中度</td><td>只有 1 項中度風險因子（IRF：cT2b–c、GG2–3、PSA 10–20），且 GG1–2，且陽性針 &lt;50%</td></tr>
+              <tr data-g="uint"><td>不利中度</td><td>2–3 項 IRF，或 GG3，或陽性針 ≥50%</td></tr>
+              <tr data-g="high"><td>高</td><td>不符極高風險，且有任 1 項：cT3–cT4、GG4–5、PSA &gt;20</td></tr>
+              <tr data-g="vhigh"><td>極高</td><td>下列 <strong>≥2 項</strong>：cT3–cT4、GG4–5、PSA ≥40（2025 年起；與 STAMPEDE 條件相同）</td></tr>
+              <tr data-g="reg"><td>區域性</td><td>任何 T、N1、M0</td></tr>
+              <tr data-g="met"><td>轉移性</td><td>任何 T、任何 N、M1</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note" style="margin-top:10px">近兩年的變動：NCCN 2026 取消「極低風險」，併入低風險；舊版極低條件（cT1c、陽性 &lt;3 針、單針 ≤50%、PSA density &lt;0.15）本頁仍標示為「低腫瘤量」，作為主動監測的參考。2025 年以前單項即屬極高風險的 cT3b–T4、Gleason 主要分級 5、&gt;4 針 GG4–5，現在只算高風險（除非合併第二項）。</p>
+          <p class="note" style="margin-top:8px">使用 5-ARI ≥6 個月者，以 PSA ×2 分層。cT 依 DRE 判定；MRI 上的囊外侵犯可作參考。</p>
+        </div>
+        <div class="card">
+          <h3>EAU 生化復發風險分組</h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>分組</th><th>條件</th></tr></thead>
+            <tbody>
+              <tr data-e="low"><td>低</td><td>ISUP 1 且 PSA &lt;10 且 cT1–2</td></tr>
+              <tr data-e="fint"><td>有利中度</td><td>（ISUP 2 且 PSA &lt;10）或（ISUP 1 且 PSA 10–20），且 cT1–2</td></tr>
+              <tr data-e="uint"><td>不利中度</td><td>（ISUP 2 且 PSA 10–20）或 ISUP 3，且 cT1–2</td></tr>
+              <tr data-e="high"><td>高（局限）</td><td>ISUP 4–5 或 PSA &gt;20</td></tr>
+              <tr data-e="locadv"><td>局部晚期</td><td>任何 PSA、任何 ISUP，cT3–4 或 cN+</td></tr>
+              <tr data-e="met"><td>轉移性</td><td>M1</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note" style="margin-top:10px">EAU 2026 版（Table 3，以系統性切片為準）不再使用 cT2 亞分期，cT2b、cT2c 不影響分組；NCCN 仍把 cT2b–c 當作中度風險因子。EAU 不單獨列出極高風險，但 ≥2 項（cT3–4、Gleason ≥8、PSA ≥40）時建議加 abiraterone。</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>ISUP Grade Group</h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>GG</th><th>Gleason</th></tr></thead>
+            <tbody>
+              <tr data-gg="1"><td>1</td><td>≤6（3+3）</td></tr>
+              <tr data-gg="2"><td>2</td><td>3+4=7</td></tr>
+              <tr data-gg="3"><td>3</td><td>4+3=7</td></tr>
+              <tr data-gg="4"><td>4</td><td>8（4+4、3+5、5+3）</td></tr>
+              <tr data-gg="5"><td>5</td><td>9–10</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+        <div class="card">
+          <h3>UCSF-CAPRA <span class="pill mute" id="capraTag">未計算</span></h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>變項</th><th>分數</th></tr></thead>
+            <tbody>
+              <tr><td>PSA</td><td>≤6：0；6.1–10：1；10.1–20：2；20.1–30：3；&gt;30：4</td></tr>
+              <tr><td>Gleason</td><td>無 4/5：0；次要 4/5：1；主要 4/5：3</td></tr>
+              <tr><td>T 分期</td><td>T1–T2：0；T3a：1</td></tr>
+              <tr><td>陽性針比例</td><td>&lt;34%：0；≥34%：1</td></tr>
+              <tr><td>年齡</td><td>&lt;50：0；≥50：1</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note" style="margin-top:10px">0–2 低、3–5 中、6–10 高風險。CAPRA 每增加 2 分，復發風險約加倍。</p>
+          <div id="capraBox" style="margin-top:10px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 treatment & monitoring -->
+  <section class="pane" id="tx" role="tabpanel" aria-labelledby="tab-tx" hidden>
+    <div class="two">
+      <div class="stack">
+        <div class="card">
+          <h3>各風險組的治療選項（NCCN 架構） <span class="pill ev">藍底＝目前病人</span></h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>分組</th><th>預期餘命 ≥10 年</th><th>預期餘命較短</th></tr></thead>
+            <tbody>
+              <tr data-g="low"><td>低</td><td>主動監測（首選）；特定病人 RP 或放療</td><td>觀察</td></tr>
+              <tr data-g="fint"><td>有利中度</td><td>主動監測（選擇性）、RP ± PLND、放療單獨（EBRT 或近接）</td><td>觀察（首選）或放療</td></tr>
+              <tr data-g="uint"><td>不利中度</td><td>RP＋PLND；EBRT＋ADT 4–6 個月；EBRT＋近接加量 ± ADT</td><td>EBRT＋ADT 4–6 個月；觀察</td></tr>
+              <tr data-g="high"><td>高</td><td>EBRT＋ADT 18–36 個月；EBRT＋近接加量＋ADT 1–3 年；RP＋擴大 PLND</td><td>≤5 年且無症狀：觀察、ADT 或放療</td></tr>
+              <tr data-g="vhigh"><td>極高</td><td>EBRT＋ADT 2 年＋abiraterone 2 年（首選）；RP＋擴大 PLND</td><td>同上</td></tr>
+              <tr data-g="reg"><td>區域性 N1</td><td>EBRT＋ADT 2–3 年＋abiraterone 2 年；RP＋PLND</td><td>ADT 或觀察</td></tr>
+              <tr data-g="met"><td>轉移性</td><td colspan="2">ADT＋ARPI（abiraterone、apalutamide、darolutamide、enzalutamide）；高負擔可耐受化療者：ADT＋docetaxel＋darolutamide 或 abiraterone；低負擔同時性轉移加攝護腺放療。ADT＋docetaxel 兩藥已不建議</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note" style="margin-top:10px">STAMPEDE 高風險條件：N1，或下列 ≥2 項：cT3–4、Gleason 8–10、PSA ≥40。ADT＝雄性素剝奪治療；ARPI＝雄性素受體路徑抑制劑；PLND＝骨盆淋巴結廓清。</p>
+        </div>
+        <div class="card">
+          <h3>轉移負擔定義（CHAARTED）</h3>
+          <p class="small">高負擔：有內臟轉移，或 ≥4 處骨轉移且至少 1 處在脊椎與骨盆以外。其餘為低負擔。</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>主動監測（Active surveillance）</h3>
+          <div class="tablebox"><table>
+            <thead><tr><th>項目</th><th>NCCN</th><th>EAU 2026（強建議）</th></tr></thead>
+            <tbody>
+              <tr><td>PSA</td><td>不超過每 6 個月一次，除非臨床需要</td><td>至少每 6 個月</td></tr>
+              <tr><td>DRE</td><td>不超過每 12 個月一次</td><td>至少每年</td></tr>
+              <tr><td>MRI</td><td>不超過每 12 個月一次，除非臨床需要</td><td>確認性切片前做 MRI</td></tr>
+              <tr><td>重複切片</td><td>不超過每 12 個月一次，除非臨床需要</td><td>每 2–3 年重複切片 ± MRI；PSA 倍增時間 &lt;3 年時做 MRI＋切片</td></tr>
+            </tbody>
+          </table></div>
+          <p class="note" style="margin-top:10px">EAU：ISUP 3 與 cribriform／intraductal 不適合主動監測；低風險、MRI 穩定（PRECISE 3）且 PSA density &lt;0.15 者可考慮省略重複切片（弱建議）。NCCN 2026：依風險調整監測強度，有利中度風險要比低風險更密集。轉為積極治療以切片升級或 MRI 進展為主，單純 PSA 變化不應作為唯一依據。</p>
+        </div>
+        <div class="card">
+          <h3>主動監測與觀察的差別</h3>
+          <div class="tablebox"><table>
+            <thead><tr><th></th><th>主動監測</th><th>觀察</th></tr></thead>
+            <tbody>
+              <tr><td>目標</td><td>延後但保留根治機會</td><td>避免治療，有症狀才處理</td></tr>
+              <tr><td>對象</td><td>預期餘命長、低風險</td><td>預期餘命短</td></tr>
+              <tr><td>追蹤</td><td>PSA、DRE、MRI、重複切片</td><td>症狀導向，少做檢查</td></tr>
+              <tr><td>介入</td><td>進展時根治性手術或放療</td><td>緩和性 ADT</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 kinetics -->
+  <section class="pane" id="kin" role="tabpanel" aria-labelledby="tab-kin" hidden>
+    <div class="two">
+      <div class="stack">
+        <div class="card">
+          <h3>PSA 序列</h3>
+          <div class="grid2" style="margin-bottom:12px">
+            <label class="field"><span class="flabel">情境</span><select id="kSetting"><option value="none">一般追蹤／未治療</option><option value="rp">根除性攝護腺切除術後</option><option value="rt">根治性放療後</option><option value="adt">ADT 去勢治療中</option></select></label>
+            <label class="field" data-k="rt"><span class="flabel">放療後 PSA 最低點（nadir）</span><span class="inl"><input type="number" id="kNadir" step="0.01" inputmode="decimal"><span class="u">ng/mL</span></span><span class="hint">留空則以序列中最低值計算</span></label>
+            <label class="field" data-k="rp rt"><span class="flabel">ISUP（術後病理／放療前切片）</span><select id="kGG"><option value="">未輸入</option><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
+            <label class="field" data-k="rt"><span class="flabel">放療結束到生化復發的間隔</span><span class="inl"><input type="number" id="kInterval" step="1" inputmode="numeric"><span class="u">個月</span></span></label>
+          </div>
+          <div class="tablebox"><table class="kt">
+            <thead><tr><th>日期</th><th>PSA（ng/mL）</th><th></th></tr></thead>
+            <tbody id="kRows"></tbody>
+          </table></div>
+          <div class="acts" style="display:flex;gap:8px;margin-top:10px"><button class="btn sm" id="kAdd" type="button">新增一筆</button><button class="btn sm" id="kClear" type="button">清空序列</button></div>
+          <p class="small muted" style="margin-top:10px">PSA 倍增時間（PSADT）以 ln(PSA) 對時間做線性迴歸計算，建議至少 3 個數值、間隔 ≥3 個月。</p>
+        </div>
+      </div>
+      <div class="stack">
+        <div class="card">
+          <h3>計算結果</h3>
+          <div id="kOut"></div>
+        </div>
+        <div class="card">
+          <h3>定義</h3>
+          <div class="tablebox"><table>
+            <tbody>
+              <tr><td>術後生化復發</td><td>PSA ≥0.2 ng/mL，並再驗一次確認（AUA）</td></tr>
+              <tr><td>術後 PSA 持續</td><td>術後 4–8 週 PSA 仍 ≥0.1 ng/mL（EAU）</td></tr>
+              <tr><td>放療後生化復發</td><td>Phoenix：PSA ≥ nadir + 2 ng/mL</td></tr>
+              <tr><td>EAU 低風險復發</td><td>術後：PSADT &gt;12 個月且病理 ISUP &lt;4；放療後：間隔 &gt;18 個月且切片 ISUP &lt;4</td></tr>
+              <tr><td>EMBARK 高風險復發</td><td>PSADT ≤9 個月，且術後 PSA ≥1 或放療後 ≥ nadir + 2；傳統影像無轉移</td></tr>
+              <tr><td>高風險 nmCRPC</td><td>去勢中（睪固酮 &lt;50 ng/dL）PSA 上升、傳統影像無轉移、PSADT ≤10 個月</td></tr>
+            </tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 algorithm -->
+  <section class="pane" id="algo" role="tabpanel" aria-labelledby="tab-algo" hidden>
+    <div class="card">
+      <h3>流程總覽 <span class="pill ev">藍框＝目前病人走到的節點</span></h3>
+      <ul class="tree">
+        <li><span class="nd" data-n="scr"><b>篩檢資格</b><small>預期餘命 ≥10–15 年；起始年齡：一般 45–50（AUA）／50（EAU），高風險 40–45</small></span>
+          <ul>
+            <li><span class="nd" data-n="normal">PSA &lt;3 且 DRE 正常<small>EAU 風險適應：40 歲 PSA &gt;1 或 60 歲 &gt;2 → 每 2 年；否則可延長到 8 年。AUA：50–69 歲每 2–4 年</small></span></li>
+            <li><span class="nd" data-n="abn"><b>PSA ≥3 或 DRE 可疑</b><small>5-ARI ≥6 個月者 PSA ×2</small></span>
+              <ul>
+                <li><span class="nd" data-n="confirm"><b>重驗 PSA、排除干擾</b><small>感染、尿滯留、器械操作</small></span>
+                  <ul>
+                    <li><span class="nd" data-n="nomri">無法做 MRI<small>風險計算器／生物標記 → 系統性切片</small></span></li>
+                    <li><span class="nd" data-n="mri"><b>切片前多參數 MRI</b><small>PI-RADS v2.1</small></span>
+                      <ul>
+                        <li><span class="nd" data-n="pi12">PI-RADS 1–2<small>看 PSA density 與臨床懷疑</small></span>
+                          <ul>
+                            <li><span class="nd" data-n="omit">PSAD &lt;0.20 且無家族史<small>EAU：不切片，改 PSA 追蹤（PSAD 0.15–0.20 可再討論）</small></span></li>
+                            <li><span class="nd" data-n="pi12bx">PSAD ≥0.20、家族史、帶因、DRE 可疑<small>考慮系統性切片</small></span></li>
+                          </ul>
+                        </li>
+                        <li><span class="nd" data-n="pi3">PI-RADS 3<small>PSAD &lt;0.10 且無家族史可不切片；否則標靶＋周邊取樣</small></span></li>
+                        <li><span class="nd" data-n="pi45">PI-RADS 4–5<small>標靶＋周邊取樣（EAU）；AUA 可加系統性切片</small></span></li>
+                      </ul>
+                    </li>
+                    <li><span class="nd" data-n="bx"><b>切片</b></span>
+                      <ul>
+                        <li><span class="nd" data-n="benign">良性<small>追蹤 PSA；MRI 與病理不一致時重做 MRI／切片</small></span></li>
+                        <li><span class="nd" data-n="cancer"><b>腺癌 → 風險分層</b><small>ISUP GG、cT、PSA、針數 → 分期影像 → 治療</small></span>
+                          <ul>
+                            <li><span class="nd" data-n="g-low">低<small>主動監測</small></span></li>
+                            <li><span class="nd" data-n="g-fint">有利中度<small>AS（選擇性）、RP、放療單獨</small></span></li>
+                            <li><span class="nd" data-n="g-uint">不利中度<small>RP＋PLND、EBRT＋短期 ADT；需分期影像</small></span></li>
+                            <li><span class="nd" data-n="g-high">高<small>任 1 項 cT3–4、GG4–5、PSA &gt;20 → EBRT＋長期 ADT、RP＋PLND</small></span></li>
+                            <li><span class="nd" data-n="g-vhigh">極高<small>≥2 項 cT3–4、GG4–5、PSA ≥40 → EBRT＋ADT＋abiraterone</small></span></li>
+                            <li><span class="nd" data-n="g-reg">區域性 N1<small>EBRT＋ADT＋abiraterone</small></span></li>
+                            <li><span class="nd" data-n="g-met">轉移性<small>ADT＋ARPI ± docetaxel</small></span></li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 6 cases -->
+  <section class="pane" id="cases" role="tabpanel" aria-labelledby="tab-cases" hidden>
+    <p class="muted small" style="margin-bottom:12px">載入示例會覆蓋目前輸入（可先用「複製摘要」保存）。示例數值為教學用的虛構資料。</p>
+    <div class="cases" id="caseList"></div>
+  </section>
+
+  <!-- 7 references -->
+  <section class="pane" id="ref" role="tabpanel" aria-labelledby="tab-ref" hidden>
+    <div class="card">
+      <h3>參考文獻</h3>
+      <ol class="refs" id="refList"></ol>
+      <div class="sub-h" style="margin-top:18px">更新紀錄</div>
+      <ul class="plain small">
+        <li>2026-10-04：初版。依 NCCN v5.2026（取消極低風險；極高風險改為 ≥2 項 cT3–4、GG4–5、PSA ≥40）、EAU 2026（新版風險分組表；PI-RADS ≤2 用 PSAD &lt;0.20、PI-RADS 3 用 PSAD &lt;0.10 且無家族史決定不切片；標靶＋周邊取樣）、AUA 2023（2026 修訂）核對。篩檢資格與追蹤間隔、PSA 判讀（5-ARI、free PSA、PSA density）、MRI／切片決策、NCCN／EAU 風險分組、CAPRA、分期影像、生殖細胞基因檢測、治療選項、主動監測、PSA 倍增時間與生化復發、示例病例。</li>
+      </ul>
+    </div>
+    <p class="disclaimer">本工具供醫療專業人員教育與流程輔助使用，不取代臨床判斷、多專科團隊討論與院內規範。指引內容會更新，治療決策前請以最新版指引為準。輸入資料只存在您這台裝置的瀏覽器中（localStorage），不會上傳；請勿輸入可識別病人身分的資訊。</p>
+  </section>
+</div>
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/*ENGINE-START*/
+const PC = (() => {
+const num = v => (v === '' || v === null || v === undefined || v === false || !isFinite(Number(v))) ? null : Number(v);
+const r1 = x => Math.round(x * 10) / 10;
+const r2 = x => Math.round(x * 100) / 100;
+
+/* ---------- thresholds (one place, cited in the UI) ---------- */
+const TH = {
+  abn: 3,            // EAU risk-adapted pathway: PSA ≥3 ng/mL → further assessment
+  psadNegMriEAU: 0.20, // EAU 2026: PI-RADS ≤2 + PSAD <0.20 + no family history → omit biopsy
+  psadNegMriAUA: 0.15, // AUA 2023 (amended 2026) text cites 0.15 (NPV ~94%); not a stand-alone threshold
+  psadPI3: 0.10,     // EAU 2026: PI-RADS 3 + PSAD <0.10 + no family history → omit biopsy
+  psadLowVol: 0.15   // former NCCN very-low criterion, kept as a low-volume marker
+};
+
+/* ---------- field schema ---------- */
+const LAYERS = [
+  { n: 1, t: '篩檢背景', d: '年齡、預期餘命、家族史與遺傳風險' },
+  { n: 2, t: 'PSA 判讀', d: 'PSA、5-ARI、干擾因素、肛診、體積、free PSA' },
+  { n: 3, t: 'MRI 與切片', d: 'PI-RADS v2.1、切片結果' },
+  { n: 4, t: '病理與臨床分期', d: 'Gleason／ISUP、陽性針數、cT' },
+  { n: 5, t: '分期影像', d: '淋巴結、遠端轉移、轉移負擔' }
+];
+const F = {
+  age: { l: '年齡', t: 'num', u: '歲', step: 1, L: 1 },
+  le: { l: '預期餘命（臨床估計）', t: 'sel', L: 1, h: '依年齡、共病與功能狀態估計；決定是否篩檢與治療強度', o: [['lt5', '<5 年'], ['5to10', '5–10 年'], ['10to15', '10–15 年'], ['gt15', '>15 年']] },
+  fh: { l: '一等親有攝護腺癌（尤其 <60 歲診斷或多人）', t: 'chk', L: 1 },
+  black: { l: '非洲裔', t: 'chk', L: 1 },
+  brca: { l: '帶有生殖細胞致病變異（BRCA2／BRCA1、ATM、HOXB13、Lynch 等）', t: 'chk', L: 1 },
+  riskNone: { l: '以上皆無', t: 'chk', L: 1 },
+  psa: { l: '總 PSA', t: 'num', u: 'ng/mL', step: 0.01, L: 2 },
+  ari: { l: '5α-還原酶抑制劑（finasteride／dutasteride）', t: 'sel', L: 2, o: [['none', '未使用'], ['short', '使用 <6 個月'], ['long', '使用 ≥6 個月']] },
+  dre: { l: '肛門指診（DRE）', t: 'sel', L: 2, o: [['normal', '正常'], ['suspicious', '可疑（硬結、結節、不對稱）'], ['notdone', '未做']] },
+  confound: { l: '近期有可能讓 PSA 假性升高的因素：泌尿道感染／急性攝護腺炎、尿滯留、導尿、膀胱鏡或攝護腺切片', t: 'chk', L: 2 },
+  confNone: { l: '無上述干擾因素', t: 'chk', L: 2 },
+  psaRepeat: { l: '已重驗 PSA（同一實驗室、數週後），仍異常', t: 'chk', L: 2 },
+  vol: { l: '攝護腺體積', t: 'num', u: 'mL', step: 1, L: 2, h: '經直腸超音波或 MRI；沒有時可填下方三徑估算' },
+  volL: { l: '長徑', t: 'num', u: 'cm', step: 0.1, L: 2 },
+  volW: { l: '寬徑', t: 'num', u: 'cm', step: 0.1, L: 2 },
+  volH: { l: '高徑', t: 'num', u: 'cm', step: 0.1, L: 2, h: '體積 ≈ 長×寬×高×0.52（橢球公式）' },
+  fpsa: { l: 'Free PSA', t: 'num', u: 'ng/mL', step: 0.01, L: 2, h: '總 PSA 4–10 且 DRE 正常時最有參考價值' },
+  priorBx: { l: '先前切片', t: 'sel', L: 2, o: [['none', '從未切片'], ['neg', '曾切片為陰性']] },
+  mri: { l: '多參數 MRI', t: 'sel', L: 3, o: [['no', '未做／無法安排'], ['pending', '已安排或待報告'], ['done', '已有報告']] },
+  pirads: { l: 'PI-RADS v2.1 最高分', t: 'sel', L: 3, o: [['1', '1：極不可能'], ['2', '2：不太可能'], ['3', '3：不確定'], ['4', '4：可能'], ['5', '5：極可能']] },
+  bx: { l: '攝護腺切片', t: 'sel', L: 3, o: [['no', '尚未切片'], ['pending', '已切片，病理待回報'], ['benign', '良性（無癌）'], ['cancer', '腺癌']] },
+  gp: { l: 'Gleason 主要分級', t: 'sel', L: 4, o: [['3', '3'], ['4', '4'], ['5', '5']] },
+  gs: { l: 'Gleason 次要分級', t: 'sel', L: 4, o: [['3', '3'], ['4', '4'], ['5', '5']] },
+  coresPos: { l: '陽性針數', t: 'num', u: '針', step: 1, L: 4 },
+  coresTot: { l: '總針數', t: 'num', u: '針', step: 1, L: 4, h: '以系統性切片針數計算比例；標靶針是否併入請依院內病理報告慣例' },
+  maxCore: { l: '單針最大癌佔比', t: 'num', u: '%', step: 1, L: 4 },
+  crib: { l: '病理有 cribriform 或 intraductal carcinoma', t: 'chk', L: 4 },
+  ct: { l: '臨床 T 分期（以 DRE 為主）', t: 'sel', L: 4, o: [['T1c', 'cT1c：摸不到，因 PSA 發現'], ['T2a', 'cT2a：≤ 單側葉一半'], ['T2b', 'cT2b：> 單側葉一半'], ['T2c', 'cT2c：侵犯雙側葉'], ['T3a', 'cT3a：囊外侵犯'], ['T3b', 'cT3b：侵犯儲精囊'], ['T4', 'cT4：固定或侵犯鄰近器官']] },
+  cn: { l: '區域淋巴結', t: 'sel', L: 5, o: [['na', '尚未做影像'], ['N0', 'cN0'], ['N1', 'cN1']] },
+  cm: { l: '遠端轉移', t: 'sel', L: 5, o: [['na', '尚未做影像'], ['M0', 'cM0'], ['M1', 'cM1']] },
+  imgMod: { l: '分期影像方式', t: 'sel', L: 5, o: [['conv', '傳統：CT／MRI＋骨掃描'], ['psma', 'PSMA PET']] },
+  mvol: { l: '轉移負擔（CHAARTED）', t: 'sel', L: 5, o: [['low', '低負擔'], ['high', '高負擔：內臟轉移，或 ≥4 處骨轉移且至少 1 處在脊椎／骨盆以外']] }
+};
+
+/* ---------- derived values ---------- */
+function gradeGroup(gp, gs) {
+  gp = num(gp); gs = num(gs);
+  if (gp === null || gs === null) return null;
+  const sum = gp + gs;
+  if (sum <= 6) return 1;
+  if (sum === 7) return gp === 3 ? 2 : 3;
+  if (sum === 8) return 4;
+  return 5;
+}
+function derive(s) {
+  const d = {};
+  d.age = num(s.age);
+  d.psa = num(s.psa);
+  d.psaAdj = d.psa === null ? null : (s.ari === 'long' ? r2(d.psa * 2) : d.psa);
+  const L = num(s.volL), W = num(s.volW), H = num(s.volH);
+  d.vol = num(s.vol);
+  d.volCalc = false;
+  if ((d.vol === null || d.vol <= 0) && L && W && H) { d.vol = r1(L * W * H * 0.52); d.volCalc = true; }
+  if (d.vol !== null && d.vol <= 0) d.vol = null;
+  // PSAD uses measured PSA: 5-ARI shrinks both PSA and gland, so doubling would overstate density
+  d.psad = d.psa !== null && d.vol ? Math.round(d.psa / d.vol * 1000) / 1000 : null;
+  const fp = num(s.fpsa);
+  d.fRatio = fp !== null && d.psa ? r1(fp / d.psa * 100) : null;
+  d.gg = gradeGroup(s.gp, s.gs);
+  d.gleason = d.gg ? `${s.gp}+${s.gs}=${Number(s.gp) + Number(s.gs)}` : null;
+  const cp = num(s.coresPos), ctot = num(s.coresTot);
+  d.pctPos = cp !== null && ctot && cp <= ctot ? r1(cp / ctot * 100) : null;
+  d.coresBad = cp !== null && ctot !== null && cp > ctot;
+  d.maxCore = num(s.maxCore);
+  d.hiRisk = !!(s.fh || s.black || s.brca);
+  d.cancer = s.bx === 'cancer';
+  d.abn = d.psaAdj !== null && d.psaAdj >= TH.abn;
+  d.dreSusp = s.dre === 'suspicious';
+  d.suspicion = d.abn || d.dreSusp;
+  d.pirads = num(s.pirads);
+  return d;
+}
+
+/* ---------- 1 screening eligibility & interval ---------- */
+function screening(s, d) {
+  const o = { items: [], verdict: null, interval: null };
+  const a = d.age;
+  if (a === null) return o;
+  const shortLE = s.le === 'lt5' || s.le === '5to10';
+  if (shortLE) {
+    o.verdict = 'stop';
+    o.items.push({ c: 'warn', t: '預期餘命 <10 年：一般不建議 PSA 篩檢', x: '篩檢的好處要約 10 年以上才顯現。有症狀或 DRE 異常時仍應評估。' });
+    return o;
+  }
+  if (s.le === '10to15') o.items.push({ c: 'info', t: '預期餘命 10–15 年：EAU 建議預期餘命 <15 年時停止早期偵測；AUA 為個別化共享決策', x: '若繼續篩檢，應說明過度診斷的可能。' });
+  const startAUA = d.hiRisk ? '40–45 歲' : '45–50 歲';
+  const startEAU = s.brca ? '40 歲' : s.black ? '45 歲' : s.fh ? '45 歲（家族成員 <60 歲診斷時）' : '50 歲';
+  o.start = { aua: startAUA, eau: startEAU };
+  if (a < 40) { o.verdict = 'tooYoung'; o.items.push({ c: 'info', t: '未滿 40 歲：不建議常規 PSA 篩檢', x: `高風險者（${d.hiRisk ? '本例符合' : '非洲裔、家族史、BRCA2 等'}）可自 40 歲起討論。` }); return o; }
+  const lim = d.hiRisk ? 40 : 45;
+  if (a < lim) { o.verdict = 'early'; o.items.push({ c: 'info', t: `尚未到建議起始年齡（AUA：${startAUA}；EAU：${startEAU}）`, x: '可先做共享決策，到起始年齡再測基準 PSA。' }); }
+  else if (a >= 70) { o.verdict = 'individual'; o.items.push({ c: 'info', t: '≥70 歲：個別化決定是否繼續篩檢', x: 'AUA：依年齡、PSA、風險與預期餘命個別化調整間隔或停止。USPSTF（2018，仍為現行版）：≥70 歲為 D 級（不建議）。' }); }
+  else o.verdict = 'eligible';
+  if (d.psaAdj === null || d.suspicion) return o;
+  // PSA in normal range → interval
+  const eauHi = a < 60 ? d.psaAdj > 1 : d.psaAdj > 2;
+  o.interval = {
+    eau: eauHi ? '每 2 年' : '可延長至 8 年',
+    eauWhy: a < 60 ? `PSA ${d.psaAdj} ${eauHi ? '>' : '≤'} 1 ng/mL（EAU 以 40 歲時 >1 為「有風險」）` : `PSA ${d.psaAdj} ${eauHi ? '>' : '≤'} 2 ng/mL（EAU 以 60 歲時 >2 為「有風險」）`,
+    aua: a >= 70 ? '個別化' : d.psaAdj < 1 ? '2–4 年；PSA <1 可再延長' : '2–4 年'
+  };
+  o.items.push({ c: 'go', t: `PSA ${d.psaAdj} ng/mL，未達進一步評估門檻（≥${TH.abn}）`, x: `下次追蹤：EAU 風險適應 ${o.interval.eau}；AUA ${o.interval.aua}。` });
+  return o;
+}
+
+/* ---------- 2 PSA interpretation ---------- */
+function interpret(s, d) {
+  const L = [];
+  if (d.psa === null) return L;
+  if (s.ari === 'long') L.push({ c: 'info', t: `5-ARI ≥6 個月：PSA 校正 ×2 → ${d.psaAdj} ng/mL`, x: '×2 是近似值：EAU 指出 5-ARI 約讓 PSA 下降 50%；AUA 提醒個體差異大。服藥中 PSA 從最低點持續上升，即使仍在「正常」範圍也應警覺。' });
+  if (s.ari === 'short') L.push({ c: 'warn', t: '5-ARI 使用未滿 6 個月：PSA 尚未穩定', x: '校正倍數不可靠；可停藥或待用藥滿 6 個月後重測。' });
+  if (s.confound) L.push({ c: 'warn', t: '有干擾因素：先處理，再重驗 PSA', x: '感染、尿滯留或器械操作可讓 PSA 暫時升高。治療後等數週再重驗，暫不據此安排切片。' });
+  if (d.abn) L.push({ k: 'abn', c: d.psaAdj >= 10 ? 'stop' : 'warn', t: `PSA ${d.psaAdj} ng/mL：達進一步評估門檻（≥${TH.abn}）`, x: d.psaAdj >= 20 ? '≥20 時高風險或轉移的機率明顯上升，確診後須完整分期。' : d.psaAdj >= 10 ? '≥10 時罹癌機率明顯上升。' : '單一 PSA 升高常為良性因素，先重驗確認，再以 MRI 分流。' });
+  if (d.psaAdj > 50) L.push({ c: 'info', t: 'PSA >50：切片風險高或需緊急治療時，AUA 允許不切片直接處理', x: '仍需全身分期影像。' });
+  if (d.dreSusp) L.push({ c: 'stop', t: 'DRE 可疑', x: '不論 PSA 數值，都應進一步 MRI 與切片評估。' });
+  if (d.fRatio !== null) {
+    const inRange = d.psaAdj >= 4 && d.psaAdj <= 10 && !d.dreSusp;
+    const lvl = d.fRatio < 10 ? ['stop', '偏高'] : d.fRatio > 25 ? ['go', '偏低'] : ['warn', '中等'];
+    L.push({ c: inRange ? lvl[0] : 'info', t: `Free/Total PSA ${d.fRatio}%：罹癌機率${lvl[1]}`, x: inRange ? '<10% 機率高；>25% 機率低（總 PSA 4–10、DRE 正常時適用）。' : '此比值在總 PSA 4–10 且 DRE 正常時才有較好的判讀依據，目前僅供參考。' });
+  }
+  if (d.psad !== null) {
+    const hi = d.psad >= TH.psadNegMriAUA;
+    L.push({ c: d.psad >= TH.psadNegMriEAU ? 'stop' : hi ? 'warn' : 'go', t: `PSA density ${d.psad} ng/mL/mL${d.volCalc ? `（體積以三徑估算 ${d.vol} mL）` : ''}`, x: `≥0.15 罹患臨床顯著癌的機率上升（AUA）；≥0.20 更高（EAU 陰性 MRI 時的切片門檻）。${s.ari === 'long' ? '使用 5-ARI 時以實測 PSA 計算，判讀較不確定。' : ''}` });
+  }
+  return L;
+}
+
+/* ---------- 3 MRI → biopsy decision ---------- */
+function biopsyDecision(s, d) {
+  if (d.cancer) return null;
+  if (!d.suspicion) return null;
+  if (s.confound) return { k: 'defer', c: 'warn', t: '暫緩：先處理干擾因素並重驗 PSA', x: [] };
+  const route = '途徑：EAU 強烈建議經會陰（感染風險較低）；AUA 認為經直腸或經會陰皆可';
+  if (s.mri !== 'done' || d.pirads === null) {
+    if (s.mri === 'pending' || !s.mri) return { k: 'mri', c: 'info', t: '下一步：切片前做多參數 MRI', x: ['EAU（強建議）：懷疑局限性癌時，切片前先做 MRI。AUA：首次切片前可使用 MRI；重複切片前若未做過則應做。', 'PSA 3–20 時，EAU 也接受以校正過的風險計算器或血液／尿液生物標記決定是否切片。'] };
+    return { k: 'sysbx', c: 'warn', t: '無法做 MRI：以風險計算器或生物標記決定，必要時系統性切片', x: [route + '。'] };
+  }
+  const p = d.pirads;
+  if (p >= 4) return { k: 'bx', c: 'stop', t: `PI-RADS ${p}：建議切片`, x: ['EAU 2026：MRI 標靶切片＋病灶周邊（perilesional）取樣。AUA：標靶切片，可加做系統性切片。', route + '。'] };
+  if (d.psad === null) return { k: 'needVol', c: 'info', t: `PI-RADS ${p}：需要 PSA density 才能分流`, x: ['補上攝護腺體積（MRI 報告通常有）。'] };
+  const flags = [s.fh && '有家族史', s.brca && '生殖細胞帶因', d.dreSusp && 'DRE 可疑'].filter(Boolean);
+  if (p === 3) {
+    if (d.psad < TH.psadPI3 && !flags.length) return { k: 'omit3', c: 'go', t: 'PI-RADS 3 且懷疑極低：可不切片，改 PSA 追蹤', x: [`PSA density ${d.psad} <0.10，且無家族史（EAU 2026，弱建議）。`, '與病人共享決策；PSA 上升或 MRI 進展時再切片。'] };
+    const lvl = d.psad > TH.psadNegMriEAU ? '建議切片' : d.psad >= TH.psadNegMriAUA ? '強烈考慮切片' : '考慮切片';
+    const why = d.psad < TH.psadPI3 ? `PSA density ${d.psad} <0.10，但${flags.join('、')}` : `PSA density ${d.psad}`;
+    return { k: 'bx', c: d.psad >= TH.psadNegMriAUA ? 'stop' : 'warn', t: `PI-RADS 3：${lvl}`, x: [why + '（EAU PI-RADS 3 × PSAD：<0.10 不切、0.10–0.15 考慮、0.15–0.20 強烈考慮、>0.20 切片）。', '標靶切片＋病灶周邊取樣。', route + '。'] };
+  }
+  // PI-RADS 1–2
+  const tr = [];
+  if (d.psad >= TH.psadNegMriEAU) tr.push(`PSA density ${d.psad} ≥0.20`);
+  tr.push(...flags);
+  if (tr.length) return { k: 'sysbxNeg', c: 'warn', t: `PI-RADS ${p} 但臨床懷疑仍高：考慮系統性切片`, x: ['理由：' + tr.join('、') + '。', 'EAU 不切片的條件是 PSAD <0.20 且無家族史；AUA：MRI 陰性但風險仍高時可做系統性切片。', route + '。'] };
+  const mid = d.psad >= TH.psadNegMriAUA;
+  return { k: 'omit', c: mid ? 'warn' : 'go', t: `PI-RADS ${p} 且臨床懷疑低：可不切片，改 PSA 追蹤`, x: [`PSA density ${d.psad} <0.20 且無家族史（EAU 2026，弱建議）。`, mid ? 'PSAD 介於 0.15–0.20：AUA 文中以 0.15 作參考（陰性預測值約 94%），可與病人討論是否仍切片。' : 'PSA 上升或出現新的懷疑時，再重做 MRI 或切片。'] };
+}
+
+/* ---------- 4 risk stratification ---------- */
+const NCCN_LABEL = { low: '低風險', fint: '有利中度風險', uint: '不利中度風險', int: '中度風險（待分有利／不利）', high: '高風險', vhigh: '極高風險', reg: '區域性（N1 M0）', met: '轉移性（M1）' };
+const EAU_LABEL = { low: '低風險', fint: '有利中度風險', uint: '不利中度風險', high: '高風險', locadv: '局部晚期', met: '轉移性' };
+const TRANK = { T1c: 0, T2a: 1, T2b: 2, T2c: 3, T3a: 4, T3b: 5, T4: 6 };
+
+/* NCCN v5.2026: very-low group removed (2026); very-high = ≥2 of cT3–T4, GG4–5, PSA ≥40 (2025) */
+function nccn(s, d) {
+  const miss = [];
+  if (s.cm === 'M1') return { id: 'met', why: ['cM1'], miss };
+  if (s.cn === 'N1') return { id: 'reg', why: ['cN1'], miss };
+  if (d.psaAdj === null) miss.push('psa');
+  if (d.gg === null) miss.push('gleason');
+  if (!s.ct) miss.push('ct');
+  if (miss.length) return { id: null, why: [], miss };
+  const p = d.psaAdj, g = d.gg, t = s.ct, t3 = TRANK[t] >= TRANK.T3a;
+  const vh = [];
+  if (t3) vh.push('c' + t);
+  if (g >= 4) vh.push(`GG${g}`);
+  if (p >= 40) vh.push('PSA ≥40');
+  if (vh.length >= 2) return { id: 'vhigh', why: ['≥2 項：' + vh.join('、')], miss };
+  const hf = [];
+  if (t3) hf.push('c' + t);
+  if (g >= 4) hf.push(`GG${g}`);
+  if (p > 20) hf.push('PSA >20');
+  if (hf.length) return { id: 'high', why: hf, miss };
+  const irf = [];
+  if (t === 'T2b' || t === 'T2c') irf.push('c' + t);
+  if (g === 2 || g === 3) irf.push(`GG${g}`);
+  if (p >= 10 && p <= 20) irf.push('PSA 10–20');
+  if (irf.length) {
+    if (d.pctPos === null) { miss.push('cores'); return { id: 'int', why: irf, miss }; }
+    const fav = irf.length === 1 && g <= 2 && d.pctPos < 50;
+    return { id: fav ? 'fint' : 'uint', why: [...irf, `IRF ${irf.length} 項`, `陽性針 ${d.pctPos}%`], miss };
+  }
+  return { id: 'low', why: ['cT1–T2a、GG1、PSA <10'], miss, lowVol: lowVolume(s, d) };
+}
+/* former NCCN very-low criteria — no longer a risk group, still a useful low-volume marker for AS */
+function lowVolume(s, d) {
+  const cp = num(s.coresPos);
+  const fails = [];
+  if (s.ct !== 'T1c') fails.push('非 cT1c');
+  if (cp !== null && cp >= 3) fails.push('≥3 針陽性');
+  if (d.maxCore !== null && d.maxCore > 50) fails.push('單針 >50%');
+  if (d.psad !== null && d.psad >= TH.psadLowVol) fails.push(`PSAD ${d.psad} ≥0.15`);
+  if (fails.length) return { ok: false, fails };
+  const need = [];
+  if (cp === null) need.push('陽性針數'); if (d.maxCore === null) need.push('單針最大佔比'); if (d.psad === null) need.push('攝護腺體積');
+  return need.length ? { ok: null, need } : { ok: true };
+}
+
+/* EAU 2026 Table 3 (cT2 substages no longer used) */
+function eau(s, d) {
+  if (s.cm === 'M1') return { id: 'met', why: ['cM1'] };
+  if (d.psaAdj === null || d.gg === null || !s.ct) return { id: null, why: [] };
+  const p = d.psaAdj, g = d.gg;
+  if (TRANK[s.ct] >= TRANK.T3a || s.cn === 'N1') return { id: 'locadv', why: [TRANK[s.ct] >= TRANK.T3a ? 'c' + s.ct : '', s.cn === 'N1' ? 'cN1' : ''].filter(Boolean) };
+  if (g >= 4 || p > 20) return { id: 'high', why: [g >= 4 ? `ISUP ${g}` : '', p > 20 ? 'PSA >20' : ''].filter(Boolean) };
+  if (g === 3) return { id: 'uint', why: ['ISUP 3'] };
+  if (g === 2 && p >= 10) return { id: 'uint', why: ['ISUP 2 且 PSA 10–20'] };
+  if (g === 2) return { id: 'fint', why: ['ISUP 2 且 PSA <10'] };
+  if (p >= 10) return { id: 'fint', why: ['ISUP 1 且 PSA 10–20'] };
+  return { id: 'low', why: ['ISUP 1、PSA <10、cT1–2'] };
+}
+
+function capra(s, d) {
+  if (d.age === null || d.psaAdj === null || d.gg === null || !s.ct || d.pctPos === null) return null;
+  if (s.cm === 'M1' || s.cn === 'N1') return null; // validated for localized disease only
+  const p = d.psaAdj;
+  const parts = [];
+  const ps = p <= 6 ? 0 : p <= 10 ? 1 : p <= 20 ? 2 : p <= 30 ? 3 : 4; parts.push(['PSA', ps]);
+  const gp = Number(s.gp), gs = Number(s.gs);
+  const gl = gp >= 4 ? 3 : gs >= 4 ? 1 : 0; parts.push(['Gleason', gl]);
+  const ts = TRANK[s.ct] >= TRANK.T3a ? 1 : 0; parts.push(['T 分期', ts]);
+  const cs = d.pctPos >= 34 ? 1 : 0; parts.push(['陽性針比例', cs]);
+  const as = d.age >= 50 ? 1 : 0; parts.push(['年齡', as]);
+  const sc = parts.reduce((a, b) => a + b[1], 0);
+  return { score: sc, cat: sc <= 2 ? 'low' : sc <= 5 ? 'int' : 'high', parts };
+}
+
+/* ---------- 5 staging imaging, germline, management ---------- */
+function imaging(s, d, g) {
+  if (!g) return null;
+  const done = s.cn && s.cn !== 'na' && s.cm && s.cm !== 'na';
+  const base = { done };
+  if (g === 'low') return { ...base, need: false, t: '不需分期影像', x: ['EAU（強建議）與 NCCN：低風險不做額外分期影像；切片前 MRI 已提供局部資訊。'] };
+  if (g === 'fint') return { ...base, need: false, t: '不需全身分期影像', x: ['EAU（強建議）：有利中度風險不做額外分期影像；NCCN 亦不常規建議。'] };
+  if (g === 'met' || g === 'reg') return { ...base, need: false, t: '已分期', x: ['若只有 PSMA PET 看到病灶、傳統影像陰性，現有療效證據多來自傳統影像分期的試驗，解讀時請留意。'] };
+  if (g === 'uint' || g === 'int') return { ...base, need: true, t: '建議全身分期影像', x: ['EAU（弱建議）：PSMA PET/CT（可取得時），或至少腹骨盆斷層影像＋骨掃描。', 'NCCN：至少做軟組織影像（CT／MRI 或 PSMA PET），依情況加骨影像。'] };
+  return { ...base, need: true, t: '必須全身分期影像', x: ['EAU（強建議）：PSMA PET/CT（可取得時）；至少要有腹骨盆斷層影像＋骨掃描。', 'NCCN：骨與軟組織影像；PSMA PET 可同時涵蓋兩者。'] };
+}
+
+function germline(s, d, g) {
+  const why = [];
+  if (g === 'met' || g === 'reg' || g === 'vhigh' || g === 'high') why.push(NCCN_LABEL[g]);
+  if (s.crib && (g === 'fint' || g === 'uint' || g === 'int')) why.push('中度風險合併 cribriform／intraductal');
+  if (s.fh) why.push('家族史');
+  if (s.brca) why.push('已知家族致病變異');
+  if (why.length) return { rec: 'yes', t: '建議做生殖細胞基因檢測', x: [`適應症：${why.join('、')}。`, '常見檢測基因：BRCA2、BRCA1、ATM、CHEK2、PALB2、MLH1/MSH2/MSH6/PMS2、HOXB13。陽性結果影響家族篩檢與後續 PARP 抑制劑等治療。'] };
+  if (g === 'fint' || g === 'uint' || g === 'int') return { rec: 'consider', t: '可考慮生殖細胞基因檢測', x: ['中度風險無其他適應症時，NCCN 列為「可考慮」。'] };
+  if (g) return { rec: 'no', t: '目前無明確檢測適應症', x: ['若有 Ashkenazi 猶太血統、本人乳癌病史、多位親屬 <60 歲診斷或死於攝護腺癌，或家族有乳癌、卵巢癌、胰臟癌，請重新評估（NCCN、EAU）。'] };
+  return null;
+}
+
+const LE_LONG = le => le === '10to15' || le === 'gt15';
+function management(s, d, g) {
+  if (!g) return null;
+  const le = s.le || null;
+  const longLE = LE_LONG(le), short = le === 'lt5';
+  const O = [];
+  const add = (t, x, pref) => O.push({ t, x, pref: !!pref });
+  let leNote = le ? null : '尚未填預期餘命：以下列出預期餘命 ≥10 年的選項。';
+  const isLong = le ? longLE : true;
+  switch (g) {
+    case 'low':
+      if (isLong) { add('主動監測（Active surveillance）', 'NCCN 首選。監測排程見「治療與監測」分頁。', true); add('根除性攝護腺切除（RP）或放射治療（EBRT／近接治療）', '用於特定病人（如腫瘤量較大、病人偏好）；多數低風險病人屬過度治療。'); }
+      else add('觀察（Observation）', '預期餘命 <10 年：有症狀時再以緩和性治療處理。', true);
+      break;
+    case 'fint':
+      if (isLong) { add('主動監測（選擇性）', '適合 Gleason pattern 4 比例低、腫瘤量小、PSA density 低者；NCCN 2026 建議比低風險更密集追蹤。EAU 不納入 ISUP 3 或 cribriform／intraductal。'); add('RP ± 骨盆淋巴結廓清', '依 nomogram 估計淋巴結轉移機率決定是否廓清。'); add('放射治療（EBRT 或近接治療單獨）', '有利中度風險一般不需合併 ADT。'); }
+      else if (!short) { add('觀察', '預期餘命 5–10 年的常見選擇。', true); add('放射治療', '可選擇。'); }
+      else add('觀察', '預期餘命 <5 年且無症狀。', true);
+      break;
+    case 'uint':
+    case 'int':
+      if (isLong) { add('RP＋骨盆淋巴結廓清', ''); add('EBRT＋短期 ADT（4–6 個月）', ''); add('EBRT＋近接治療加量（brachy boost）± 短期 ADT', ''); }
+      else if (!short) { add('EBRT＋短期 ADT（4–6 個月）', ''); add('觀察', '預期餘命 5–10 年可考慮。'); }
+      else add('觀察', '預期餘命 <5 年且無症狀。', true);
+      if (g === 'int') leNote = (leNote ? leNote + ' ' : '') + '尚未區分有利／不利，暫列不利中度風險的選項。';
+      break;
+    case 'high':
+      if (!short) {
+        add('EBRT＋長期 ADT（18–36 個月）', '可再加近接治療加量（ADT 1–3 年）。EAU：高風險放療合併 ADT 2–3 年（強建議）。', true);
+        add('RP＋擴大骨盆淋巴結廓清', '適合年輕、體能好、腫瘤未固定者；術後依病理決定輔助治療。');
+      } else add('觀察、ADT 或局部放射治療', '預期餘命 ≤5 年且無症狀：以避免症狀為目標。', true);
+      break;
+    case 'vhigh':
+      if (!short) {
+        add('EBRT＋ADT 2 年＋abiraterone 2 年', 'NCCN 極高風險首選；條件與 STAMPEDE 相同（≥2 項：cT3–4、Gleason 8–10、PSA ≥40）。EAU 強建議。', true);
+        add('EBRT＋長期 ADT（18–36 個月）± 近接治療加量', '不適合 abiraterone 時。');
+        add('RP＋擴大骨盆淋巴結廓清', '特定病人；術後依病理決定輔助治療。');
+      } else add('觀察、ADT 或局部放射治療', '預期餘命 ≤5 年且無症狀：以避免症狀為目標。', true);
+      break;
+    case 'reg':
+      add('EBRT（含骨盆淋巴結）＋ADT 2–3 年＋abiraterone 2 年', 'N1 依 STAMPEDE 證據。', true);
+      add('RP＋骨盆淋巴結廓清', '特定病人。');
+      add('單獨 ADT', '不適合局部治療者。');
+      break;
+    case 'met':
+      add('ADT＋ARPI（abiraterone、apalutamide、darolutamide 或 enzalutamide）', '所有適合者都應強化治療；不建議單獨 ADT，ADT＋docetaxel 兩藥也已不再建議。', s.mvol !== 'high');
+      add('ADT＋docetaxel＋darolutamide 或 abiraterone（三合一）', '高負擔、可接受化療者首選（NCCN category 1）；低負擔同時性有爭議，低負擔異時性不建議。', s.mvol === 'high');
+      if (s.mvol !== 'high') add('合併攝護腺局部放射治療', 'CHAARTED 低負擔、同時性轉移：STAMPEDE 顯示可延長存活（EAU 強建議）。', s.mvol === 'low');
+      break;
+  }
+  return { opts: O, leNote };
+}
+function stampedeHR(s, d) {
+  if (s.cn === 'N1') return true;
+  let n = 0;
+  if (s.ct && TRANK[s.ct] >= TRANK.T3a) n++;
+  if (d.gg !== null && d.gg >= 4) n++;
+  if (d.psaAdj !== null && d.psaAdj >= 40) n++;
+  return n >= 2;
+}
+
+/* ---------- guided asks ---------- */
+function filled(s, id) { const v = s[id]; return !(v === undefined || v === null || v === '' || v === false); }
+function buildAsks(s, d, R) {
+  const A = [];
+  const pend = s._pending || [];
+  const push = (key, t, why, fields, pri) => { if (!pend.includes(key)) A.push({ key, t, why, fields, pri: pri || 'now' }); };
+  const riskDone = !!(s.fh || s.black || s.brca || s.riskNone);
+  const modsDone = filled(s, 'ari') && (s.confound || s.confNone) && filled(s, 'dre');
+  if (d.age === null || d.psa === null) {
+    push('base', d.cancer ? '診斷時年齡與 PSA' : '年齡與 PSA', d.cancer ? '風險分層需要診斷時（最近一次、切片前）的 PSA。' : '只要年齡就能判斷篩檢資格；有 PSA 就能開始判讀。', ['age', 'psa']);
+    return A;
+  }
+  if (!d.cancer) {
+    if (!s.le) push('le', '預期餘命', '預期餘命 <10 年一般不建議篩檢或切片；EAU 以 <15 年為停止早期偵測的參考。', ['le']);
+    if (!riskDone) push('risk', '家族史與遺傳風險', '決定篩檢起始年齡與追蹤間隔；生殖細胞帶因者即使 MRI 陰性也會降低切片門檻。', ['fh', 'black', 'brca', 'riskNone']);
+    if (!modsDone) push('mods', '判讀 PSA 前要先知道的事', '5-ARI 會讓 PSA 下降一半；感染或器械操作會讓 PSA 暫時升高；DRE 可疑本身就是進一步評估的理由。', ['ari', 'dre', 'confound', 'confNone']);
+    if (!d.suspicion) return A;
+    if (!s.confound && !s.psaRepeat && s.bx !== 'benign' && d.psaAdj !== null && d.psaAdj <= 10 && !d.dreSusp) push('repeat', '重驗 PSA', 'EAU 建議無症狀、PSA 3–10 者先重驗確認，再進入 MRI／切片；AUA 也建議異常 PSA 先重驗。重驗與安排 MRI 可同時進行。', ['psaRepeat']);
+    if (s.confound) return A;
+    if (d.vol === null) push('vol', '攝護腺體積（算 PSA density）', 'PSA density 是 MRI 陰性或 PI-RADS 3 時決定切片與否的關鍵。', ['vol', 'volL', 'volW', 'volH']);
+    if (!s.mri || (s.mri === 'done' && d.pirads === null)) push('mri', '切片前 MRI', '先做 MRI 再決定是否切片，可減少不必要的切片與低風險癌的過度診斷。', s.mri === 'done' ? ['mri', 'pirads'] : ['mri']);
+    const bxNeeded = R.bxDec && ['bx', 'sysbx', 'sysbxNeg'].includes(R.bxDec.k);
+    if (bxNeeded && (!s.bx || s.bx === 'no')) push('bx', '切片結果', '依上面的決策安排切片；已切片待報告可選「病理待回報」。', ['bx']);
+    if (d.fRatio === null && d.psaAdj >= 4 && d.psaAdj <= 10 && !d.dreSusp) push('fpsa', 'Free PSA（選填）', '總 PSA 4–10 時可輔助判斷。', ['fpsa'], 'later');
+    if (!s.priorBx) push('priorBx', '先前切片史（選填）', '曾切片陰性者，AUA 建議重複切片前一定要做 MRI。', ['priorBx'], 'later');
+    return A;
+  }
+  // cancer
+  if (d.gg === null) push('gleason', 'Gleason 分級', '換算成 ISUP grade group，是所有風險分層的核心。', ['gp', 'gs']);
+  if (!s.ct) push('ct', '臨床 T 分期', 'NCCN 與 EAU 的 cT 主要依 DRE；MRI 看到的囊外侵犯可作參考。', ['ct']);
+  const n = R.risk.nccn;
+  if (d.pctPos === null || d.maxCore === null) {
+    const needed = !n || !n.id || n.id === 'int';
+    push('cores', '切片針數', '中度風險要靠陽性針比例（50%）區分有利／不利；CAPRA 也需要。低風險時可評估腫瘤量（陽性 <3 針、單針 ≤50%）。', ['coresPos', 'coresTot', 'maxCore'], needed ? 'now' : 'later');
+  }
+  if (n && n.id === 'low' && d.vol === null) push('vol', '攝護腺體積（選填）', 'PSA density <0.15 是低腫瘤量、適合主動監測的參考指標。', ['vol', 'volL', 'volW', 'volH'], 'later');
+  if (!s.le) push('le', '預期餘命', '決定主動監測／觀察或積極治療。', ['le']);
+  const img = R.imaging;
+  if (img && img.need && !img.done) push('staging', '分期影像結果', '依風險分層需要全身分期；結果決定是否為 N1 或 M1。', ['imgMod', 'cn', 'cm']);
+  if (s.cm === 'M1' && !s.mvol) push('mvol', '轉移負擔', '高、低負擔的治療選擇不同（三合一、攝護腺放療）。', ['mvol']);
+  if (!s.crib && n && ['fint', 'uint', 'int'].includes(n.id)) push('crib', '病理特徵（選填）', 'Cribriform／intraductal 會降低主動監測的適合度，也是基因檢測的適應症。', ['crib'], 'later');
+  if (!riskDone) push('risk', '家族史與遺傳風險', '影響生殖細胞基因檢測建議。', ['fh', 'black', 'brca', 'riskNone'], 'later');
+  return A;
+}
+
+/* ---------- path & algorithm nodes ---------- */
+function pathSteps(s, d, R) {
+  const st = [];
+  const riskDone = !!(s.fh || s.black || s.brca || s.riskNone);
+  const modsDone = filled(s, 'ari') && (s.confound || s.confNone) && filled(s, 'dre');
+  st.push({ t: '年齡與 PSA', done: d.age !== null && d.psa !== null, x: d.psa !== null ? `PSA ${d.psa}${s.ari === 'long' ? `（校正 ${d.psaAdj}）` : ''}` : '' });
+  st.push({ t: '篩檢背景', done: !!s.le && riskDone, x: R.screen.verdict ? { stop: '不建議篩檢', tooYoung: '未到篩檢年齡', early: '未到起始年齡', individual: '個別化', eligible: '符合篩檢' }[R.screen.verdict] : '' });
+  st.push({ t: 'PSA 判讀', done: modsDone, x: d.psa === null ? '' : d.suspicion ? '需進一步評估' : '未達門檻' });
+  const skipBx = !d.suspicion && !d.cancer;
+  st.push({ t: 'MRI 與切片決策', done: d.cancer || s.bx === 'benign' || (R.bxDec && (R.bxDec.k === 'omit' || R.bxDec.k === 'omit3')), skip: skipBx, x: d.cancer ? '已確診' : R.bxDec ? R.bxDec.t : '' });
+  st.push({ t: '病理與 cT', done: d.gg !== null && !!s.ct && d.pctPos !== null, skip: !d.cancer, x: d.gg ? `GG${d.gg}${s.ct ? ' · c' + s.ct : ''}` : '' });
+  const n = R.risk.nccn;
+  st.push({ t: '風險分層', done: !!(n && n.id && n.id !== 'int'), skip: !d.cancer, x: n && n.id ? NCCN_LABEL[n.id] : '' });
+  st.push({ t: '分期影像與治療', done: !!(R.imaging && (!R.imaging.need || R.imaging.done)), skip: !d.cancer, x: R.imaging ? R.imaging.t : '' });
+  let cur = st.findIndex(x => !x.done && !x.skip);
+  st.forEach((x, i) => { x.now = i === cur; });
+  return st;
+}
+
+function nodes(s, d, R) {
+  const on = new Set();
+  if (d.psa === null && d.age === null) return on;
+  on.add('scr');
+  if (d.psa === null) return on;
+  if (!d.suspicion && !d.cancer) { on.add('normal'); return on; }
+  on.add('abn'); on.add('confirm');
+  if (s.confound) return on;
+  if (d.cancer) { on.add('bx'); on.add('cancer'); }
+  else {
+    if (s.mri === 'done' && d.pirads !== null) on.add('mri');
+    if (s.mri === 'no') on.add('nomri');
+    const k = R.bxDec && R.bxDec.k;
+    if (d.pirads >= 4) on.add('pi45');
+    else if (d.pirads === 3) on.add('pi3');
+    else if (d.pirads !== null) { on.add('pi12'); if (k === 'omit') on.add('omit'); if (k === 'sysbxNeg') on.add('pi12bx'); }
+    if (s.bx === 'benign') { on.add('bx'); on.add('benign'); }
+    if (s.bx === 'pending') on.add('bx');
+  }
+  const n = R.risk.nccn;
+  if (n && n.id) on.add('g-' + (n.id === 'int' ? 'uint' : n.id));
+  if (d.cancer && !s.mri) on.add('mri');
+  return on;
+}
+
+/* ---------- main ---------- */
+function evaluate(s) {
+  s = s || {};
+  const d = derive(s);
+  const R = { d };
+  R.screen = screening(s, d);
+  R.interp = interpret(s, d);
+  R.bxDec = biopsyDecision(s, d);
+  R.risk = d.cancer ? { nccn: nccn(s, d), eau: eau(s, d), capra: capra(s, d) } : { nccn: null, eau: null, capra: null };
+  const g = R.risk.nccn && R.risk.nccn.id;
+  R.imaging = imaging(s, d, g);
+  R.germ = germline(s, d, g);
+  R.mgmt = management(s, d, g);
+  R.stampede = d.cancer ? stampedeHR(s, d) : false;
+  R.asks = buildAsks(s, d, R);
+  R.pending = (s._pending || []).slice();
+  R.path = pathSteps(s, d, R);
+  R.nodes = nodes(s, d, R);
+  R.phase = d.cancer ? 'dx' : d.psa === null ? 'start' : d.suspicion ? 'workup' : 'screen';
+  if (s.cm === 'M1' && d.cancer) R.phase = 'dx';
+  return R;
+}
+
+/* ---------- PSA kinetics (doubling time, recurrence) ---------- */
+function kinetics(rows, ctx) {
+  ctx = ctx || {};
+  const pts = (rows || []).map(r => ({ t: Date.parse(r.date), v: num(r.psa) })).filter(p => isFinite(p.t) && p.v !== null && p.v > 0).sort((a, b) => a.t - b.t);
+  const o = { n: pts.length, pts };
+  if (pts.length >= 2) {
+    const MO = 30.4375 * 864e5;
+    const xs = pts.map(p => (p.t - pts[0].t) / MO), ys = pts.map(p => Math.log(p.v));
+    const mx = xs.reduce((a, b) => a + b, 0) / xs.length, my = ys.reduce((a, b) => a + b, 0) / ys.length;
+    let sxy = 0, sxx = 0; xs.forEach((x, i) => { sxy += (x - mx) * (ys[i] - my); sxx += (x - mx) ** 2; });
+    o.spanMonths = r1(xs[xs.length - 1]);
+    if (sxx > 0) {
+      const slope = sxy / sxx; o.slope = slope;
+      o.psadt = slope > 0 ? r1(Math.log(2) / slope) : null;
+      o.falling = slope <= 0;
+      const vx = xs.map(x => x / 12); const mvx = vx.reduce((a, b) => a + b, 0) / vx.length; const mv = pts.reduce((a, p) => a + p.v, 0) / pts.length;
+      let a1 = 0, a2 = 0; vx.forEach((x, i) => { a1 += (x - mvx) * (pts[i].v - mv); a2 += (x - mvx) ** 2; });
+      o.velocity = a2 > 0 ? r2(a1 / a2) : null;
+    }
+  }
+  const last = pts.length ? pts[pts.length - 1].v : null;
+  o.last = last;
+  const R = [];
+  if (ctx.setting === 'rp' && last !== null) {
+    const ge02 = pts.filter(p => p.v >= 0.2);
+    const two = pts.length >= 2 && pts[pts.length - 1].v >= 0.2 && pts[pts.length - 2].v >= 0.2;
+    o.bcr = two ? 'yes' : last >= 0.2 ? 'confirm' : 'no';
+    R.push(two ? { c: 'stop', t: '符合術後生化復發（PSA ≥0.2，連續兩次確認）' } : last >= 0.2 ? { c: 'warn', t: 'PSA ≥0.2：需再驗一次確認是否生化復發' } : { c: 'go', t: '未達術後生化復發定義（PSA ≥0.2 並確認）' });
+    if (ge02.length === 0 && last >= 0.1) R.push({ c: 'info', t: 'PSA 0.1–0.2：可偵測但未達復發定義，密集追蹤；部分專家在此階段即考慮早期挽救放療' });
+  }
+  if (ctx.setting === 'rt' && last !== null) {
+    const nadir = num(ctx.nadir) !== null ? num(ctx.nadir) : Math.min(...pts.map(p => p.v));
+    o.nadir = nadir;
+    o.bcr = last >= nadir + 2 ? 'yes' : 'no';
+    R.push(o.bcr === 'yes' ? { c: 'stop', t: `符合放療後生化復發（Phoenix：nadir ${nadir} + 2 = ${r2(nadir + 2)}）` } : { c: 'go', t: `未達 Phoenix 定義（nadir ${nadir} + 2 = ${r2(nadir + 2)}）` });
+  }
+  if ((ctx.setting === 'rp' || ctx.setting === 'rt') && o.bcr === 'yes' && o.psadt !== undefined) {
+    const pg = num(ctx.pathGG);
+    if (ctx.setting === 'rp') {
+      if (o.psadt !== null && pg !== null) { o.eauRisk = (o.psadt > 12 && pg < 4) ? 'low' : 'high'; }
+    } else {
+      const iv = num(ctx.interval);
+      if (iv !== null && pg !== null) o.eauRisk = (iv > 18 && pg < 4) ? 'low' : 'high';
+    }
+    if (o.eauRisk) R.push({ c: o.eauRisk === 'low' ? 'go' : 'stop', t: `EAU 生化復發風險：${o.eauRisk === 'low' ? '低風險' : '高風險'}`, x: ctx.setting === 'rp' ? '低風險＝PSADT >12 個月且病理 ISUP <4' : '低風險＝放療到復發間隔 >18 個月且切片 ISUP <4' });
+    // EMBARK high-risk BCR
+    const embarkPsa = ctx.setting === 'rp' ? last >= 1 : last >= (o.nadir || 0) + 2;
+    if (o.psadt !== null && o.psadt <= 9 && embarkPsa) R.push({ c: 'warn', t: '符合 EMBARK 高風險生化復發條件（PSADT ≤9 個月）', x: '傳統影像無轉移時，enzalutamide ± leuprolide 可延長無轉移存活。' });
+  }
+  if (ctx.setting === 'adt' && o.psadt !== undefined && o.psadt !== null) {
+    R.push(o.psadt <= 10 ? { c: 'stop', t: `去勢中 PSA 上升，PSADT ${o.psadt} 個月 ≤10：高風險 nmCRPC`, x: '傳統影像無轉移且睪固酮 <50 ng/dL：apalutamide、darolutamide 或 enzalutamide 可延長無轉移存活。' } : { c: 'warn', t: `去勢中 PSA 上升，PSADT ${o.psadt} 個月`, x: '確認睪固酮已達去勢濃度，並排除轉移。' });
+  }
+  o.notes = R;
+  return o;
+}
+
+/* ---------- summary text ---------- */
+function summary(s) {
+  const R = evaluate(s), d = R.d, L = [];
+  L.push('【PSA／攝護腺癌決策摘要】');
+  if (d.age !== null) L.push(`年齡 ${d.age}${s.le ? '，預期餘命 ' + F.le.o.find(o => o[0] === s.le)[1] : ''}`);
+  const rf = [s.fh && '家族史', s.black && '非洲裔', s.brca && '生殖細胞帶因'].filter(Boolean);
+  if (rf.length) L.push('風險因子：' + rf.join('、'));
+  if (d.psa !== null) L.push(`PSA ${d.psa} ng/mL${s.ari === 'long' ? `（5-ARI 校正 ${d.psaAdj}）` : ''}${d.psad !== null ? `；PSAD ${d.psad}` : ''}${d.fRatio !== null ? `；f/t ${d.fRatio}%` : ''}${s.dre ? '；DRE ' + F.dre.o.find(o => o[0] === s.dre)[1] : ''}`);
+  if (s.mri === 'done' && d.pirads !== null) L.push(`MRI PI-RADS ${d.pirads}`);
+  if (R.bxDec) L.push('切片決策：' + R.bxDec.t);
+  if (s.bx === 'benign') L.push('切片：良性');
+  if (d.cancer) {
+    L.push(`病理：腺癌${d.gleason ? `，Gleason ${d.gleason}（GG${d.gg}）` : ''}${d.pctPos !== null ? `，陽性 ${s.coresPos}/${s.coresTot} 針（${d.pctPos}%）` : ''}${d.maxCore !== null ? `，最大佔比 ${d.maxCore}%` : ''}${s.crib ? '，cribriform/IDC' : ''}`);
+    if (s.ct) L.push(`臨床分期 c${s.ct}${s.cn && s.cn !== 'na' ? ' c' + s.cn : ''}${s.cm && s.cm !== 'na' ? ' c' + s.cm : ''}${s.mvol ? `（${s.mvol === 'high' ? '高' : '低'}負擔）` : ''}`);
+    const n = R.risk.nccn, e = R.risk.eau, c = R.risk.capra;
+    if (n && n.id) L.push(`NCCN：${NCCN_LABEL[n.id]}${n.lowVol && n.lowVol.ok ? '（低腫瘤量）' : ''}`);
+    if (e && e.id) L.push(`EAU：${EAU_LABEL[e.id]}`);
+    if (c) L.push(`CAPRA：${c.score} 分`);
+    if (R.imaging) L.push('分期影像：' + R.imaging.t);
+    if (R.germ) L.push('基因檢測：' + R.germ.t);
+    if (R.mgmt && R.mgmt.opts.length) L.push('治療選項：' + R.mgmt.opts.map(o => o.t + (o.pref ? '（首選）' : '')).join('；'));
+  } else if (R.screen.interval) L.push(`下次 PSA：EAU ${R.screen.interval.eau}；AUA ${R.screen.interval.aua}`);
+  const need = R.asks.filter(a => a.pri !== 'later').map(a => a.t);
+  if (need.length) L.push('待補：' + need.join('、'));
+  if (R.pending.length) L.push('待回報：' + R.pending.join('、'));
+  return L.join('\n');
+}
+
+const api = { TH, F, LAYERS, NCCN_LABEL, EAU_LABEL, derive, gradeGroup, screening, interpret, biopsyDecision, nccn, lowVolume, eau, capra, imaging, germline, management, stampedeHR, evaluate, kinetics, summary, filled };
+if (typeof module !== 'undefined') module.exports = api;
+return api;
+})();
+/*ENGINE-END*/
+
+/* ===================== UI ===================== */
+const $ = id => document.getElementById(id);
+const esc = x => String(x).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const LS = 'prostate-psa-case-v1';
+const blank = () => ({ _pending: [], _log: [], _series: [], _k: { setting: 'none' } });
+let S = (() => { try { const x = JSON.parse(localStorage.getItem(LS)); if (x && typeof x === 'object') return Object.assign(blank(), x); } catch (e) {} return blank(); })();
+const save = () => { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) {} };
+let R = null;
+
+function fieldHTML(id, ctx) {
+  const f = PC.F[id], v = S[id];
+  const da = `data-f="${id}"`;
+  if (f.t === 'chk') return `<label class="check"><input type="checkbox" ${da} ${v ? 'checked' : ''}><span>${esc(f.l)}</span></label>`;
+  const hint = f.h ? `<span class="hint">${esc(f.h)}</span>` : '';
+  if (f.t === 'num') return `<label class="field"><span class="flabel">${esc(f.l)}</span><span class="inl"><input type="number" inputmode="decimal" step="${f.step || 'any'}" ${da} value="${v === undefined || v === null ? '' : esc(v)}">${f.u ? `<span class="u">${esc(f.u)}</span>` : ''}</span>${hint}</label>`;
+  const opts = `<option value="">未輸入</option>` + f.o.map(o => `<option value="${o[0]}" ${v === o[0] ? 'selected' : ''}>${esc(o[1])}</option>`).join('');
+  return `<label class="field ${ctx === 'ask' ? 'wide' : ''}"><span class="flabel">${esc(f.l)}</span><select ${da}>${opts}</select>${hint}</label>`;
+}
+
+function renderSheet() {
+  $('sheet').innerHTML = PC.LAYERS.map(L => {
+    const ids = Object.keys(PC.F).filter(f => PC.F[f].L === L.n);
+    const nums = ids.filter(f => PC.F[f].t !== 'chk'), chks = ids.filter(f => PC.F[f].t === 'chk');
+    return `<details class="layer" data-layer="${L.n}"><summary><span class="n">${L.n}</span><span class="t">${L.t} <span class="small muted" style="font-weight:400">${L.d}</span></span><span class="lstat pill mute"></span></summary><div class="lb">
+      ${nums.length ? `<div class="grid2">${nums.map(f => fieldHTML(f, 'sheet')).join('')}</div>` : ''}
+      ${chks.length ? `<div>${chks.map(f => fieldHTML(f, 'sheet')).join('')}</div>` : ''}
+    </div></details>`;
+  }).join('');
+}
+function syncSheet() {
+  document.querySelectorAll('#sheet [data-f]').forEach(el => {
+    const v = S[el.dataset.f];
+    if (el.type === 'checkbox') el.checked = !!v;
+    else if (document.activeElement !== el) el.value = v === undefined || v === null ? '' : v;
+  });
+  PC.LAYERS.forEach(L => {
+    const ids = Object.keys(PC.F).filter(f => PC.F[f].L === L.n);
+    const n = ids.filter(f => PC.filled(S, f)).length;
+    const el = document.querySelector(`#sheet details[data-layer="${L.n}"] .lstat`);
+    if (el) el.textContent = n ? `已填 ${n}` : '未填';
+  });
+}
+
+const LBL = s => s ? PC.NCCN_LABEL[s] : '';
+function alertHTML(i) {
+  return `<div class="alert ${i.c}"><strong>${esc(i.t)}</strong>${i.x ? `<span class="small">${esc(i.x)}</span>` : ''}</div>`;
+}
+
+function renderStatus() {
+  const d = R.d, n = R.risk.nccn;
+  const phase = { start: '輸入年齡與 PSA 開始', screen: '篩檢／PSA 未達門檻', workup: '異常 PSA 評估中', dx: '已確診：分層與治療' }[R.phase];
+  const grp = n && n.id ? `<span class="grp g-${n.id}">NCCN ${esc(LBL(n.id))}</span>` : '';
+  const act = R.path.filter(x => !x.skip), done = act.filter(x => x.done).length, tot = act.length || 1;
+  $('status').innerHTML = `<div class="kbox">${d.psa === null ? '—' : d.psa}<small>PSA${S.ari === 'long' ? ` ×2=${d.psaAdj}` : ''}</small></div>
+    <div class="grow"><div class="phase">${esc(phase)}</div><div class="prog"><i style="width:${Math.round(done / tot * 100)}%"></i></div></div>
+    ${grp}
+    <div class="acts"><button class="btn sm primary" type="button" id="copySum">複製摘要</button><button class="btn sm" type="button" id="resetAll">清除</button></div>`;
+}
+
+function renderAsks() {
+  const now = R.asks.filter(a => a.pri !== 'later'), later = R.asks.filter(a => a.pri === 'later');
+  $('askCount').textContent = now.length ? `${now.length} 項` : '完成';
+  const card = (a, i) => `<div class="ask ${a.pri === 'later' ? 'later' : ''}" data-ask="${a.key}">
+    <div class="ah"><h4>${i === 0 && a.pri !== 'later' ? '▶ ' : ''}${esc(a.t)}</h4>${a.pri === 'later' ? '<span class="pill mute">選填</span>' : ''}</div>
+    <p class="why">${esc(a.why)}</p>
+    <div class="fields">${a.fields.filter(f => PC.F[f].t !== 'chk').map(f => fieldHTML(f, 'ask')).join('')}</div>
+    ${a.fields.some(f => PC.F[f].t === 'chk') ? `<div class="checks">${a.fields.filter(f => PC.F[f].t === 'chk').map(f => fieldHTML(f, 'ask')).join('')}</div>` : ''}
+    <div class="acts"><button class="btn sm" type="button" data-pend="${a.key}" data-title="${esc(a.t)}">已安排，待回報</button></div>
+  </div>`;
+  $('asks').innerHTML = now.length ? now.map(card).join('') : `<div class="alert go"><strong>目前階段的必要資料已齊全</strong><span class="small">可在右側資料表修改任一項；選填項目在下方。</span></div>`;
+  $('laterBox').innerHTML = later.length ? `<details class="more" style="margin-top:10px"><summary>選填項目（${later.length}）</summary><div class="asklist" style="margin-top:8px">${later.map(card).join('')}</div></details>` : '';
+  const P = S._pending || [];
+  $('pendCard').hidden = !P.length;
+  $('pending').innerHTML = P.map(k => `<div class="pend"><span>${esc((S._pendT || {})[k] || k)}</span><button class="btn sm" type="button" data-unpend="${k}">結果已出來</button></div>`).join('');
+}
+
+function renderDecide() {
+  const H = [];
+  const dx = R.d.cancer;
+  if (!dx) R.screen.items.forEach(i => H.push(alertHTML(i)));
+  if (R.screen.start && !dx) H.push(`<p class="small muted">篩檢起始年齡：AUA ${esc(R.screen.start.aua)}；EAU ${esc(R.screen.start.eau)}。</p>`);
+  R.interp.filter(i => !(dx && i.k === 'abn')).forEach(i => H.push(alertHTML(i)));
+  if (dx && !H.length) H.push('<p class="small muted">已確診，請看下方風險分層與治療選項。</p>');
+  const b = R.bxDec;
+  if (b) H.push(`<div class="alert ${b.c}"><strong>${esc(b.t)}</strong>${b.x.map(x => `<span class="small">${esc(x)}</span>`).join('')}</div>`);
+  if (S.bx === 'benign' && !R.d.cancer) H.push(alertHTML({ c: 'info', t: '切片良性', x: R.d.pirads >= 4 ? 'PI-RADS 4–5 但標靶切片良性：屬影像與病理不一致，建議重新判讀 MRI，或短期內重做 MRI／切片。' : '繼續追蹤 PSA；PSA 持續上升或出現新的懷疑時，再重做 MRI。' }));
+  if (S.bx === 'pending') H.push(alertHTML({ c: 'info', t: '病理待回報', x: '報告出來後在「切片」欄改選結果。' }));
+  if (!H.length) H.push('<p class="small muted">輸入年齡與 PSA 後顯示。</p>');
+  $('decide').innerHTML = H.join('');
+}
+
+function renderRisk() {
+  const r = R.risk, d = R.d;
+  $('riskCard').hidden = !d.cancer;
+  $('mgmtCard').hidden = !d.cancer;
+  if (!d.cancer) return;
+  const n = r.nccn, e = r.eau, c = r.capra;
+  $('riskTag').textContent = n && n.id ? LBL(n.id) : '資料不足';
+  const missName = { psa: 'PSA', gleason: 'Gleason', ct: 'cT', cores: '針數', maxCore: '最大佔比', vol: '攝護腺體積' };
+  let h = `<div class="rg">
+    <div class="m"><span class="k">NCCN</span><span class="v">${n && n.id ? esc(LBL(n.id)) : '—'}</span>${n && n.why.length ? `<div class="why">${n.why.map(w => `<span>${esc(w)}</span>`).join('')}</div>` : ''}</div>
+    <div class="m"><span class="k">EAU</span><span class="v">${e && e.id ? esc(PC.EAU_LABEL[e.id]) : '—'}</span>${e && e.why.length ? `<div class="why">${e.why.map(w => `<span>${esc(w)}</span>`).join('')}</div>` : ''}</div>
+    <div class="m"><span class="k">UCSF-CAPRA</span><span class="v">${c ? `${c.score} 分 · ${{ low: '低', int: '中', high: '高' }[c.cat]}` : '—'}</span>${c ? '' : `<span class="small muted">${S.cm === 'M1' || S.cn === 'N1' ? '只適用於局限性疾病' : '需年齡、PSA、Gleason、cT、針數'}</span>`}</div>
+  </div>`;
+  if (n && n.miss.length) h += `<p class="small muted" style="margin-top:8px">尚缺：${n.miss.map(m => missName[m] || m).join('、')}</p>`;
+  if (n && n.lowVol) {
+    const lv = n.lowVol;
+    h += lv.ok ? alertHTML({ c: 'go', t: '低腫瘤量：符合舊版 NCCN「極低風險」條件', x: 'cT1c、陽性 <3 針、單針 ≤50%、PSA density <0.15。NCCN 2026 已把這組併入低風險，但仍是主動監測的理想對象。' })
+      : lv.ok === null ? `<p class="small muted" style="margin-top:8px">補上${lv.need.join('、')}可判斷是否為低腫瘤量（舊版極低風險條件）。</p>`
+      : `<p class="small muted" style="margin-top:8px">非低腫瘤量：${esc(lv.fails.join('、'))}。</p>`;
+  }
+  if (d.gg) h += `<p class="small" style="margin-top:8px">Gleason ${esc(d.gleason)} → ISUP GG${d.gg}${d.pctPos !== null ? `；陽性針 ${d.pctPos}%` : ''}${S.ari === 'long' ? `；分層使用校正 PSA ${d.psaAdj}` : ''}</p>`;
+  if (d.coresBad) h += alertHTML({ c: 'warn', t: '陽性針數大於總針數，請檢查' });
+  $('riskBox').innerHTML = h;
+
+  let m = '';
+  if (R.imaging) m += `<h4 style="margin-bottom:6px">分期影像</h4><div class="alert ${R.imaging.need ? (R.imaging.done ? 'go' : 'warn') : 'info'}"><strong>${esc(R.imaging.t)}${R.imaging.need && R.imaging.done ? '（已完成）' : ''}</strong>${R.imaging.x.map(x => `<span class="small">${esc(x)}</span>`).join('')}</div>`;
+  if (S.imgMod === 'psma' && (S.cn === 'N1' || S.cm === 'M1')) m += `<div class="alert warn" style="margin-top:8px"><strong>PSMA PET 偵測到的 N1／M1</strong><span class="small">若傳統影像陰性，屬「分期遷移」：多數治療證據來自傳統影像分期，請在多專科會議討論治療強度。</span></div>`;
+  if (R.germ) m += `<h4 style="margin:14px 0 6px">生殖細胞基因檢測</h4><div class="alert ${R.germ.rec === 'yes' ? 'warn' : 'info'}"><strong>${esc(R.germ.t)}</strong>${R.germ.x.map(x => `<span class="small">${esc(x)}</span>`).join('')}</div>`;
+  if (R.mgmt) {
+    m += `<h4 style="margin:14px 0 6px">治療選項 <span class="pill mute">${esc(LBL(n.id))}</span></h4>`;
+    if (R.mgmt.leNote) m += `<p class="small muted" style="margin-bottom:6px">${esc(R.mgmt.leNote)}</p>`;
+    m += `<div class="items">${R.mgmt.opts.map(o => `<div class="opt ${o.pref ? 'pref' : ''}"><b>${esc(o.t)}${o.pref ? ' <span class="pill go">首選</span>' : ''}</b>${o.x ? `<span>${esc(o.x)}</span>` : ''}</div>`).join('')}</div>`;
+    if (S.crib && ['low', 'fint'].includes(n.id)) m += alertHTML({ c: 'warn', t: '有 cribriform／intraductal：主動監測的適合度降低', x: '這些病理特徵與較差預後相關，多數專家不建議納入主動監測。' });
+    m += `<p class="small muted" style="margin-top:8px">治療選擇需經多專科討論，並依病人偏好、排尿與性功能、共病調整。</p>`;
+  }
+  $('mgmtBox').innerHTML = m;
+}
+
+function renderPath() {
+  $('path').innerHTML = R.path.map((p, i) => `<li class="${p.done ? 'done' : ''} ${p.now ? 'now' : ''}"><i>${p.done ? '✓' : p.skip ? '–' : i + 1}</i><div>${esc(p.t)}${p.skip ? ' <span class="pl">不需要</span>' : ''}${p.x && !p.skip ? `<div class="pl">${esc(p.x)}</div>` : ''}</div></li>`).join('');
+}
+function renderLog() {
+  const L = S._log || [];
+  $('log').innerHTML = L.length ? L.slice().reverse().map(e => `<div><span class="mono">${new Date(e.t).toLocaleTimeString('zh-TW', { hour: '2-digit', minute: '2-digit' })}</span><span>${esc(e.m)}</span></div>`).join('') : '<p class="small muted">每次填寫或修改資料都會記錄在這裡。</p>';
+}
+function renderTables() {
+  const n = R.risk.nccn, e = R.risk.eau;
+  const gid = n && n.id ? (n.id === 'int' ? 'uint' : n.id) : null;
+  document.querySelectorAll('tr[data-g]').forEach(tr => tr.classList.toggle('hl', tr.dataset.g === gid));
+  document.querySelectorAll('tr[data-e]').forEach(tr => tr.classList.toggle('hl', !!(e && e.id) && tr.dataset.e === (e.id === 'int' ? 'uint' : e.id)));
+  document.querySelectorAll('tr[data-gg]').forEach(tr => tr.classList.toggle('hl', String(R.d.gg) === tr.dataset.gg));
+  const c = R.risk.capra;
+  $('capraTag').textContent = c ? `${c.score} 分` : '未計算';
+  $('capraBox').innerHTML = c ? `<div class="tablebox"><table><thead><tr><th>本例</th><th>分數</th></tr></thead><tbody>${c.parts.map(p => `<tr><td>${esc(p[0])}</td><td class="mono">${p[1]}</td></tr>`).join('')}<tr class="hl"><td>總分</td><td class="mono">${c.score}（${{ low: '低', int: '中', high: '高' }[c.cat]}風險）</td></tr></tbody></table></div>` : '';
+  document.querySelectorAll('.tree .nd').forEach(el => el.classList.toggle('on', R.nodes.has(el.dataset.n)));
+}
+
+function renderAll() {
+  // keep keyboard focus (e.g. Tab from one ask field to the next) across the re-render
+  const ae = document.activeElement;
+  const af = ae && ae.dataset && ae.dataset.f ? { f: ae.dataset.f, zone: ae.closest('#asks') ? '#asks' : '#sheet' } : null;
+  R = PC.evaluate(S);
+  renderStatus(); renderAsks(); renderDecide(); renderRisk(); renderPath(); syncSheet(); renderLog(); renderTables(); renderKin();
+  save();
+  if (af) { const el = document.querySelector(`${af.zone} [data-f="${af.f}"]`) || document.querySelector(`[data-f="${af.f}"]`); if (el && el !== document.activeElement) el.focus(); }
+}
+
+/* ---------- input handling ---------- */
+function labelOf(id, v) {
+  const f = PC.F[id];
+  if (f.t === 'chk') return v ? '勾選' : '取消';
+  if (f.t === 'sel') { const o = f.o.find(o => o[0] === v); return o ? o[1] : '清除'; }
+  return v === '' ? '清除' : v + (f.u ? ' ' + f.u : '');
+}
+function setField(id, el) {
+  const f = PC.F[id];
+  let v;
+  if (f.t === 'chk') v = el.checked;
+  else if (f.t === 'num') v = el.value === '' ? '' : Number(el.value);
+  else v = el.value;
+  if (S[id] === v || (S[id] === undefined && (v === '' || v === false))) return;
+  S[id] = v === '' ? undefined : v;
+  if (f.t === 'chk' && v) {
+    if (id === 'riskNone') S.fh = S.black = S.brca = false;
+    if (['fh', 'black', 'brca'].includes(id)) S.riskNone = false;
+    if (id === 'confNone') S.confound = false;
+    if (id === 'confound') S.confNone = false;
+  }
+  S._log.push({ t: Date.now(), m: `${f.l.split('（')[0]}：${labelOf(id, v)}` });
+  if (S._log.length > 300) S._log = S._log.slice(-300);
+  setTimeout(renderAll, 0); // let focus land on the next field first
+}
+document.addEventListener('change', e => {
+  const el = e.target.closest('[data-f]');
+  if (el) setField(el.dataset.f, el);
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.matches('input[type=number][data-f]')) { e.preventDefault(); e.target.blur(); }
+});
+document.addEventListener('click', e => {
+  const p = e.target.closest('[data-pend]');
+  if (p) { S._pending = [...new Set([...(S._pending || []), p.dataset.pend])]; S._pendT = Object.assign(S._pendT || {}, { [p.dataset.pend]: p.dataset.title }); S._log.push({ t: Date.now(), m: `${p.dataset.title}：已安排，待回報` }); renderAll(); toast('已標記待回報，系統先用現有資料往下判斷'); return; }
+  const u = e.target.closest('[data-unpend]');
+  if (u) { const k = u.dataset.unpend; S._pending = (S._pending || []).filter(x => x !== k); renderAll(); const el = document.querySelector(`[data-ask="${k}"] [data-f]`); if (el) { el.closest('.ask').scrollIntoView({ block: 'center', behavior: 'smooth' }); el.focus(); el.closest('.ask').classList.add('flash'); } return; }
+  if (e.target.id === 'copySum') { copyText(PC.summary(S)); return; }
+  if (e.target.id === 'resetAll') { if (confirm('清除所有輸入？')) { S = blank(); renderAll(); toast('已清除'); } return; }
+  if (e.target.id === 'expandAll') { const ds = [...document.querySelectorAll('#sheet details.layer')]; const open = !ds.every(x => x.open); ds.forEach(x => x.open = open); e.target.textContent = open ? '全部收合' : '全部展開'; return; }
+  const c = e.target.closest('[data-case]'); if (c) { loadCase(+c.dataset.case); return; }
+  const kd = e.target.closest('[data-kdel]'); if (kd) { S._series.splice(+kd.dataset.kdel, 1); save(); renderKin(true); return; }
+  if (e.target.id === 'kAdd') { S._series.push({ date: '', psa: '' }); save(); renderKin(true); return; }
+  if (e.target.id === 'kClear') { if (confirm('清空 PSA 序列？')) { S._series = []; save(); renderKin(true); } return; }
+});
+
+/* ---------- kinetics tab ---------- */
+function renderKin(rebuild) {
+  const K = S._k || (S._k = { setting: 'none' });
+  $('kSetting').value = K.setting || 'none';
+  if (document.activeElement !== $('kNadir')) $('kNadir').value = K.nadir ?? '';
+  $('kGG').value = K.pathGG ?? '';
+  if (document.activeElement !== $('kInterval')) $('kInterval').value = K.interval ?? '';
+  document.querySelectorAll('[data-k]').forEach(el => { el.hidden = !el.dataset.k.split(' ').includes(K.setting); });
+  if (!S._series.length) S._series = [{ date: '', psa: '' }, { date: '', psa: '' }, { date: '', psa: '' }];
+  if (rebuild || !$('kRows').children.length || $('kRows').children.length !== S._series.length) {
+    $('kRows').innerHTML = S._series.map((r, i) => `<tr><td><input type="date" data-kr="${i}" data-kf="date" value="${esc(r.date || '')}"></td><td><input type="number" step="0.01" inputmode="decimal" data-kr="${i}" data-kf="psa" value="${esc(r.psa ?? '')}"></td><td><button class="btn sm" type="button" data-kdel="${i}" aria-label="刪除此筆">刪除</button></td></tr>`).join('');
+  }
+  const o = PC.kinetics(S._series, K);
+  let h = '';
+  if (o.n < 2) h = '<p class="small muted">輸入至少兩筆有日期的 PSA。</p>';
+  else {
+    h += `<div class="bdr"><div class="m"><div class="k">PSA 倍增時間</div><div class="v">${o.falling ? '下降中' : o.psadt === null ? '—' : o.psadt + ' 月'}</div></div><div class="m"><div class="k">PSA 速度</div><div class="v">${o.velocity ?? '—'}<span class="u"> ng/mL/年</span></div></div><div class="m"><div class="k">期間</div><div class="v">${o.spanMonths}<span class="u"> 月 · ${o.n} 筆</span></div></div></div>`;
+    if (o.n < 3 || o.spanMonths < 3) h += `<p class="small muted" style="margin-top:6px">資料點少或期間短，PSADT 不穩定。</p>`;
+    h += chart(o, K);
+  }
+  o.notes.forEach(i => { h += `<div style="margin-top:8px">${alertHTML(i)}</div>`; });
+  if (K.setting === 'none' && o.n >= 2 && o.velocity !== null) h += `<p class="note" style="margin-top:8px">AUA 2023：PSA 速度不應單獨作為切片的依據。</p>`;
+  $('kOut').innerHTML = h;
+}
+function chart(o, K) {
+  const P = o.pts; if (P.length < 2) return '';
+  const W = 520, H = 200, pl = 44, pr = 12, pt = 12, pb = 26;
+  const t0 = P[0].t, t1 = P[P.length - 1].t;
+  let vals = P.map(p => p.v);
+  let thr = null;
+  if (K.setting === 'rp') thr = 0.2; else if (K.setting === 'rt' && o.nadir !== undefined) thr = o.nadir + 2;
+  if (thr) vals = vals.concat(thr);
+  const lo = Math.log10(Math.min(...vals) * 0.8), hi = Math.log10(Math.max(...vals) * 1.25);
+  const x = t => pl + (t - t0) / ((t1 - t0) || 1) * (W - pl - pr);
+  const y = v => pt + (hi - Math.log10(v)) / ((hi - lo) || 1) * (H - pt - pb);
+  const ticks = []; for (let e = Math.floor(lo); e <= Math.ceil(hi); e++) [1, 2, 5].forEach(m => { const v = m * Math.pow(10, e); if (Math.log10(v) >= lo && Math.log10(v) <= hi) ticks.push(v); });
+  const fmt = v => v >= 1 ? String(+v.toFixed(0)) : String(+v.toPrecision(1));
+  const d = P.map((p, i) => `${i ? 'L' : 'M'}${x(p.t).toFixed(1)},${y(p.v).toFixed(1)}`).join('');
+  const dt = ts => new Date(ts).toISOString().slice(0, 7);
+  return `<svg class="kchart" viewBox="0 0 ${W} ${H}" role="img" aria-label="PSA 對數座標趨勢圖">
+    ${ticks.map(v => `<line class="ax" x1="${pl}" x2="${W - pr}" y1="${y(v)}" y2="${y(v)}"/><text x="${pl - 6}" y="${y(v) + 4}" text-anchor="end">${fmt(v)}</text>`).join('')}
+    ${thr ? `<line class="th" x1="${pl}" x2="${W - pr}" y1="${y(thr)}" y2="${y(thr)}"/>` : ''}
+    <path class="ln" d="${d}"/>${P.map(p => `<circle class="pt" cx="${x(p.t)}" cy="${y(p.v)}" r="3.5"/>`).join('')}
+    <text x="${pl}" y="${H - 6}">${dt(t0)}</text><text x="${W - pr}" y="${H - 6}" text-anchor="end">${dt(t1)}</text>
+  </svg><p class="small muted">對數座標${thr ? '；紅虛線＝復發門檻' : ''}</p>`;
+}
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.dataset && el.dataset.kr !== undefined) { S._series[+el.dataset.kr][el.dataset.kf] = el.value; save(); renderKin(); return; }
+  if (el.id === 'kNadir') { S._k.nadir = el.value; save(); renderKin(); }
+  if (el.id === 'kInterval') { S._k.interval = el.value; save(); renderKin(); }
+});
+document.addEventListener('change', e => {
+  if (e.target.id === 'kSetting') { S._k.setting = e.target.value; save(); renderKin(); }
+  if (e.target.id === 'kGG') { S._k.pathGG = e.target.value; save(); renderKin(); }
+});
+
+function copyText(t) {
+  const done = () => toast('摘要已複製，可貼到病歷');
+  if (navigator.clipboard && window.isSecureContext) navigator.clipboard.writeText(t).then(done, () => fallback());
+  else fallback();
+  function fallback() { const ta = document.createElement('textarea'); ta.value = t; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); done(); } catch (e) { toast('無法複製'); } ta.remove(); }
+}
+let tt; function toast(m) { const el = $('toast'); el.textContent = m; el.classList.add('show'); clearTimeout(tt); tt = setTimeout(() => el.classList.remove('show'), 1800); }
+
+/* tabs */
+const TABS = ['ws', 'risk', 'tx', 'kin', 'algo', 'cases', 'ref'];
+function showTab(t) {
+  TABS.forEach(x => { $(x).hidden = x !== t; $('tab-' + x).setAttribute('aria-selected', x === t); $('tab-' + x).tabIndex = x === t ? 0 : -1; });
+  try { localStorage.setItem(LS + '-tab', t); } catch (e) {}
+  window.scrollTo({ top: 0 });
+}
+document.querySelector('.tabs').addEventListener('click', e => { const b = e.target.closest('.tab'); if (b) showTab(b.dataset.t); });
+document.querySelector('.tabs').addEventListener('keydown', e => {
+  if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+  const i = TABS.indexOf(document.querySelector('.tab[aria-selected="true"]').dataset.t);
+  const n = TABS[(i + (e.key === 'ArrowRight' ? 1 : TABS.length - 1)) % TABS.length]; showTab(n); $('tab-' + n).focus();
+});
+
+/* example cases */
+const BG = { riskNone: true, ari: 'none', confNone: true };
+const CASES = [
+  { t: '健檢 PSA 1.4', d: '55 歲，無家族史，預期餘命 >15 年。想知道多久要再驗。', s: { age: 55, psa: 1.4, le: 'gt15', ...BG, dre: 'notdone' } },
+  { t: '初次接觸：只有年齡與 PSA', d: '62 歲門診，PSA 6.8。其他資料都還沒有，看系統如何一步步引導。', s: { age: 62, psa: 6.8 } },
+  { t: '服用 dutasteride、PI-RADS 2', d: '68 歲，dutasteride 3 年，PSA 3.1（校正 6.2）。MRI PI-RADS 2，攝護腺 62 mL。', s: { age: 68, psa: 3.1, le: '10to15', riskNone: true, ari: 'long', confNone: true, dre: 'normal', psaRepeat: true, vol: 62, mri: 'done', pirads: '2', priorBx: 'none' } },
+  { t: '低風險、低腫瘤量', d: '58 歲，PSA 5.1、攝護腺 48 mL，PI-RADS 3 切片 GG1，2/12 針、最大 20%，cT1c。（舊版 NCCN 的極低風險）', s: { age: 58, psa: 5.1, le: 'gt15', ...BG, dre: 'normal', psaRepeat: true, vol: 48, mri: 'done', pirads: '3', bx: 'cancer', gp: '3', gs: '3', coresPos: 2, coresTot: 12, maxCore: 20, ct: 'T1c' } },
+  { t: '有利中度風險', d: '64 歲，PSA 7.2，PI-RADS 4，切片 3+4（GG2），3/12 針，cT1c。', s: { age: 64, psa: 7.2, le: 'gt15', ...BG, dre: 'normal', psaRepeat: true, vol: 40, mri: 'done', pirads: '4', bx: 'cancer', gp: '3', gs: '4', coresPos: 3, coresTot: 12, maxCore: 40, ct: 'T1c' } },
+  { t: '不利中度風險', d: '70 歲，PSA 14，4+3（GG3），7/14 針，DRE 摸到單側葉一半以上（cT2b）。', s: { age: 70, psa: 14, le: '10to15', ...BG, dre: 'suspicious', psaRepeat: true, vol: 45, mri: 'done', pirads: '5', bx: 'cancer', gp: '4', gs: '3', coresPos: 7, coresTot: 14, maxCore: 70, ct: 'T2b' } },
+  { t: '2025 年後改列高風險', d: '68 歲，PSA 9，4+5（GG5），主要分級 4、cT2a。舊版因 >4 針 GG4–5 屬極高風險；新版只有 GG5 一項，改列高風險。', s: { age: 68, psa: 9, le: 'gt15', ...BG, dre: 'normal', psaRepeat: true, vol: 35, mri: 'done', pirads: '5', bx: 'cancer', gp: '4', gs: '5', coresPos: 6, coresTot: 12, maxCore: 80, ct: 'T2a' } },
+  { t: '極高風險', d: '66 歲，PSA 28，4+4（GG4），cT3a。cT3 加 GG4 共 2 項，屬極高風險；骨掃描與 CT 陰性。', s: { age: 66, psa: 28, le: 'gt15', fh: true, ari: 'none', confNone: true, dre: 'suspicious', psaRepeat: true, vol: 38, mri: 'done', pirads: '5', bx: 'cancer', gp: '4', gs: '4', coresPos: 8, coresTot: 12, maxCore: 90, ct: 'T3a', imgMod: 'conv', cn: 'N0', cm: 'M0' } },
+  { t: '轉移性、高負擔', d: '72 歲，骨痛，PSA 85，切片 4+5（GG5），cT3b；骨掃描多處骨轉移含肋骨與股骨。', s: { age: 72, psa: 85, le: '5to10', ...BG, dre: 'suspicious', bx: 'cancer', gp: '4', gs: '5', coresPos: 10, coresTot: 12, maxCore: 95, ct: 'T3b', imgMod: 'conv', cn: 'N1', cm: 'M1', mvol: 'high' } }
+];
+function renderCases() {
+  $('caseList').innerHTML = CASES.map((c, i) => `<div class="card case"><div style="display:flex;justify-content:space-between;gap:8px;align-items:baseline"><h3 style="font-size:15.5px">${esc(c.t)}</h3><span class="sample">示例</span></div><p class="small muted">${esc(c.d)}</p><div><button class="btn primary sm" type="button" data-case="${i}">載入此病例</button></div></div>`).join('');
+}
+function loadCase(i) {
+  const c = CASES[i];
+  const keepK = { _series: S._series, _k: S._k };
+  S = Object.assign(blank(), JSON.parse(JSON.stringify(c.s)), keepK);
+  S._log.push({ t: Date.now(), m: `載入示例：${c.t}` });
+  renderAll(); showTab('ws'); toast('已載入示例：' + c.t);
+}
+
+const REFS = [
+  ['Wei JT, Barocas D, Carlsson S, et al. Early Detection of Prostate Cancer: AUA/SUO Guideline Part I & II. J Urol 2023;210:46–63（2026 年 2 月修訂版）.', 'https://www.auanet.org/guidelines-and-quality/guidelines/early-detection-of-prostate-cancer-guidelines'],
+  ['EAU-EANM-ESTRO-ESUR-ISUP-SIOG Guidelines on Prostate Cancer. European Association of Urology, 2026 edition（2026 年 3 月文字更新）.', 'https://uroweb.org/guidelines/prostate-cancer'],
+  ['NCCN Clinical Practice Guidelines in Oncology: Prostate Cancer, Version 5.2026；NCCN Guidelines Insights: Prostate Cancer, Version 5.2026. J Natl Compr Canc Netw 2026;24(5). doi:10.6004/jnccn.2026.0023', 'https://www.nccn.org/guidelines/guidelines-detail?category=1&id=1459'],
+  ['Miura N, Shimbo M, et al. Impact of the 2025 NCCN definition change for very high-risk prostate cancer on surgical outcomes after RARP. Int J Urol 2026;33(2):e70366.', 'https://doi.org/10.1111/iju.70366'],
+  ['Eastham JA, Auffenberg GB, Barocas DA, et al. Clinically Localized Prostate Cancer: AUA/ASTRO Guideline. J Urol 2022;208:10–18.', 'https://www.auanet.org/guidelines-and-quality/guidelines/clinically-localized-prostate-cancer-aua/astro-guideline-2022'],
+  ['Turkbey B, Rosenkrantz AB, Haider MA, et al. Prostate Imaging Reporting and Data System Version 2.1. Eur Urol 2019;76:340–351.', 'https://doi.org/10.1016/j.eururo.2019.02.033'],
+  ['Cooperberg MR, Pasta DJ, Elkin EP, et al. The UCSF Cancer of the Prostate Risk Assessment score. J Urol 2005;173:1938–1942.', 'https://doi.org/10.1097/01.ju.0000158155.33890.e7'],
+  ['Epstein JI, Egevad L, Amin MB, et al. The 2014 ISUP Consensus Conference on Gleason Grading. Am J Surg Pathol 2016;40:244–252.', 'https://doi.org/10.1097/PAS.0000000000000530'],
+  ['US Preventive Services Task Force. Screening for Prostate Cancer: Recommendation Statement. JAMA 2018;319:1901–1913（2026 年仍為現行版，更新中）.', 'https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/prostate-cancer-screening'],
+  ['Roach M 3rd, Hanks G, Thames H Jr, et al. Defining biochemical failure following radiotherapy (Phoenix definition). Int J Radiat Oncol Biol Phys 2006;65:965–974.', 'https://doi.org/10.1016/j.ijrobp.2006.04.029'],
+  ['James ND, et al. Abiraterone for prostate cancer not previously treated with hormone therapy (STAMPEDE). N Engl J Med 2017;377:338–351；Attard G, et al. Lancet 2022;399:447–460.', 'https://doi.org/10.1016/S0140-6736(21)02437-5'],
+  ['Freedland SJ, et al. Improved outcomes with enzalutamide in biochemically recurrent prostate cancer (EMBARK). N Engl J Med 2023;389:1453–1465.', 'https://doi.org/10.1056/NEJMoa2303974'],
+  ['Sweeney CJ, et al. Chemohormonal therapy in metastatic hormone-sensitive prostate cancer (CHAARTED). N Engl J Med 2015;373:737–746.', 'https://doi.org/10.1056/NEJMoa1503747']
+];
+$('refList').innerHTML = REFS.map(r => `<li>${esc(r[0])} <a href="${r[1]}" target="_blank" rel="noopener">連結</a></li>`).join('');
+
+renderSheet(); renderCases(); renderAll();
+(() => { let t = 'ws'; try { t = localStorage.getItem(LS + '-tab') || 'ws'; } catch (e) {} showTab(TABS.includes(t) ? t : 'ws'); })();
+document.querySelectorAll('#sheet details.layer').forEach((dt, i) => { if (i < 2) dt.open = true; });
+</script>
+</body>
+</html>
