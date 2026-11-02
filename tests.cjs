@@ -182,5 +182,69 @@ console.log('Summary');
 t('summary includes NCCN group, low-volume tag and treatment', () => { const s = PC.summary({ age: 65, ...BG, bx: 'cancer', ...VL }); assert.match(s, /NCCN：低風險（低腫瘤量）/); assert.match(s, /主動監測/); });
 t('metastatic: doublet lists darolutamide', () => assert.ok(CA({ psa: 30, gp: '4', gs: '4', ct: 'T2c', cm: 'M1', mvol: 'low' }).mgmt.opts.some(x => /darolutamide 或 enzalutamide/.test(x.t))));
 
+console.log('Teaching content');
+const tb = html.match(/\/\*TEACH-START\*\/([\s\S]*?)\/\*TEACH-END\*\//);
+const T = new Function(tb[1] + '; return { CASES: TEACH_CASES, QUIZ: TEACH_QUIZ, MAP: TEACH_MAP };')();
+const QZ = T.QUIZ, ansText = i => QZ[i].o[QZ[i].a];
+const tc = id => T.CASES.find(c => c.id === id);
+t('3 cases, 20 questions (10 + 10), answers A–D 5 each', () => {
+  assert.equal(T.CASES.length, 3); assert.equal(QZ.length, 20);
+  assert.equal(QZ.filter(q => q.lv === 'basic').length, 10); assert.equal(QZ.filter(q => q.lv === 'adv').length, 10);
+  [0, 1, 2, 3].forEach(a => assert.equal(QZ.filter(q => q.a === a).length, 5, 'option ' + a));
+});
+t('every question has 4 distinct options, explanation and source', () => QZ.forEach((q, i) => { assert.equal(new Set(q.o).size, 4, 'Q' + (i + 1)); assert.ok(q.e && q.s, 'Q' + (i + 1)); }));
+t('correct option is uniquely longest in at most 3 questions', () => { const n = QZ.filter(q => q.o.every((x, j) => j === q.a || x.length < q.o[q.a].length)).length; assert.ok(n <= 3, String(n)); });
+t('mind map has both sides with sourced leaves', () => [...T.MAP.left, ...T.MAP.right].forEach(([k, lv]) => { assert.ok(lv.length >= 3, k); lv.forEach(l => assert.ok(l[0] && l[1], k)); }));
+t('case crib: PI-RADS 3 biopsy despite low PSAD, favourable NCCN + EAU, CAPRA 2, germline, no staging', () => {
+  const r = ev(tc('crib').s); assert.equal(r.d.psad, 0.088); assert.equal(r.d.pctPos, 21.4);
+  assert.equal(ev({ ...tc('crib').s, bx: 'no' }).bxDec.t, 'PI-RADS 3：考慮切片');
+  assert.equal(r.risk.nccn.id, 'fint'); assert.equal(r.risk.eau.id, 'fint'); assert.equal(r.risk.capra.score, 2);
+  assert.equal(r.germ.rec, 'yes'); assert.equal(r.imaging.need, false);
+});
+t('case bcr: BCR, PSADT 6.0, EAU high, not EMBARK', () => {
+  const c = tc('bcr').s, k = PC.kinetics(c._series, { setting: 'rp', pathGG: c._k.pathGG });
+  assert.equal(k.bcr, 'yes'); assert.equal(k.psadt, 6); assert.equal(k.eauRisk, 'high'); assert.ok(!k.notes.some(x => /EMBARK/.test(x.t)));
+});
+t('case nhi: high-volume triplet preferred; NHI 1/3, only ADT + bone agent', () => {
+  const c = tc('nhi').s, r = ev(c); assert.equal(r.risk.nccn.id, 'met');
+  assert.ok(r.mgmt.opts.find(o => o.pref).t.includes('docetaxel'));
+  const n = PC.nhi({ ...c._nhi, gs8: r.d.gg >= 4 }); assert.equal(n.hr.ok, false); assert.equal(n.hr.met.length, 1);
+  assert.deepEqual(n.items.filter(i => i.st === 'yes').map(i => /^ADT|Zoledronic/.test(i.d)), [true, true]);
+});
+const Q = { ...BG, bx: 'cancer' };
+t('quiz numbers agree with the engine', () => {
+  assert.equal(PC.gradeGroup(4, 3), 3); assert.match(ansText(0), /GG3/);
+  assert.equal(ev({ age: 65, psa: 2.4, ari: 'long' }).d.psaAdj, 4.8);
+  assert.equal(ev({ age: 66, psa: 6, vol: 45, ...BG, mri: 'done', pirads: '2' }).bxDec.k, 'omit');
+  const g = x => grp({ psa: x[2], gp: x[1][0], gs: x[1][1], ct: x[0], coresPos: 3, coresTot: 12 });
+  assert.equal(g(['T3a', '44', 18]), 'vhigh'); assert.equal(g(['T2a', '45', 9]), 'high'); assert.equal(g(['T1c', '44', 30]), 'high'); assert.equal(g(['T3b', '43', 25]), 'high');
+  assert.equal(grp({ psa: 6, gp: '3', gs: '4', ct: 'T1c', coresPos: 7, coresTot: 12 }), 'uint');
+  assert.equal(PC.imaging({}, {}, 'fint').need, false);
+  assert.equal(PC.kinetics([{ date: '2026-01-01', psa: 0.4 }, { date: '2026-06-01', psa: 2.1 }], { setting: 'rt', nadir: 0.4 }).bcr, 'no');
+  const cap = CA({ age: 66, psa: 12, gp: '4', gs: '3', ct: 'T2b', coresPos: 5, coresTot: 12 }).risk.capra; assert.equal(cap.score, 7); assert.equal(cap.cat, 'high');
+  const dis = CA({ psa: 6, gp: '3', gs: '3', ct: 'T2b', coresPos: 3, coresTot: 12 }).risk; assert.equal(dis.nccn.id, 'fint'); assert.equal(dis.eau.id, 'low');
+  assert.match(ev({ age: 66, psa: 7.2, vol: 40, ...BG, mri: 'done', pirads: '3' }).bxDec.t, /強烈考慮切片/);
+  assert.equal(grp({ psa: 6, ari: 'long', gp: '3', gs: '3', ct: 'T1c', coresPos: 2, coresTot: 12 }), 'fint');
+  assert.equal(grp({ psa: 6, gp: '3', gs: '3', ct: 'T1c', coresPos: 2, coresTot: 12 }), 'low');
+});
+t('quiz EMBARK options: only A qualifies', () => {
+  const mo = (psa, n) => [{ date: '2025-01-01', psa: psa / Math.pow(2, 12 / n) }, { date: '2025-07-02', psa: psa / Math.pow(2, 6 / n) }, { date: '2026-01-01', psa }];
+  const em = (a, b, c) => PC.kinetics(mo(a, b), c).notes.some(x => /EMBARK/.test(x.t));
+  assert.ok(em(1.4, 7, { setting: 'rp', pathGG: 3 })); assert.ok(!em(0.6, 7, { setting: 'rp', pathGG: 3 })); assert.ok(!em(2.0, 14, { setting: 'rp', pathGG: 3 }));
+  assert.ok(!em(1.9, 6, { setting: 'rt', nadir: 0.5, interval: 12, pathGG: 3 }));
+});
+t('quiz NHI answers agree with the engine', () => {
+  assert.ok(PC.nhiHighRisk({ gs8: true, bone3: true, visceral: false }).ok);
+  const H = { stage: 'mcspc', gs8: true, bone3: true, visceral: false, nha: 'none', ecog: 1, labs: true }, r = PC.nhi(H);
+  assert.equal(stOf(r, /Darolutamide＋docetaxel/), 'yes'); assert.equal(stOf(r, /Abiraterone＋docetaxel/), 'no');
+  const now = Date.parse('2026-07-15'), ser = (v, ds) => v.map((psa, i) => ({ date: ds[i], psa }));
+  const six = ['2026-01-10', '2026-04-10', '2026-07-01'];
+  assert.ok(PC.nhiPsadtCheck(ser([0.6, 0.9, 1.4], six), now).ok);
+  assert.ok(!PC.nhiPsadtCheck(ser([0.1, 0.5, 1.5], six), now).ok); assert.ok(!PC.nhiPsadtCheck(ser([0.3, 0.5, 0.8], six), now).ok);
+  assert.ok(!PC.nhiPsadtCheck(ser([1.2, 1.6, 2.1], ['2026-05-27', '2026-06-14', '2026-07-01']), now).ok);
+  const m = PC.nhi({ stage: 'mcrpc', ecog: 1, nha: 'used', doce: 0, symptomatic: false, visceral: false, fastCRPC: false, gs8: true, brca: true });
+  assert.equal(stOf(m, /Olaparib 單獨/), 'yes'); assert.equal(stOf(m, /Olaparib＋abiraterone/), 'no'); assert.equal(stOf(m, /化療前/), 'no'); assert.equal(stOf(m, /Lu-PSMA/), 'no');
+});
+
 console.log(`\n${pass} passed, ${fail} failed`);
 process.exit(fail ? 1 : 0);
